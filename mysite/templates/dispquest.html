@@ -1,0 +1,463 @@
+{% load static %}
+<!DOCTYPE html>
+
+
+<html>
+    <head>
+        
+            <script 
+            src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js"> 
+            </script> 
+            <style type="text/css">
+                
+            </style>
+            
+
+    </head>
+    
+    <body>
+        <div id="DIV1">
+        <h2 style="background-color:DodgerBlue;"> Select Any of the below questions to add it to the question PAPER.</h2>
+         
+        <table border="1" class="gridtable" id="tableMain">
+		<thead>
+            <tr><th>Question Text  </th><th>CO</th><th>UNIT Num</th><th>
+                BLoom Level</th> <th>MAX MARKS</th><th>MIN MARKS </th>
+                <th>QTYPE</th><th>OPTION 1</th><th>OPTION 2</th><th>OPTION 3</th><th>OPTION 4</th>
+             </tr>
+			 </th>
+			 <tbody>
+             {% for item in query_result %}
+             <tr>
+                 
+            <td>
+                {{item.QText}}
+            </td>
+            <td>
+                {{item.CO}}
+            </td>
+            <td>
+                {{item.Unit_num}}
+            </td>
+            <td>
+                {{item.BloomL}}
+            </td>
+            <td>
+                {{item.Max_marks}}
+            </td>
+            <td>
+                {{item.Min_marks}}
+            </td>
+            <td>
+                {{item.Qtype}}
+            </td>
+            <td>
+                {{item.choice_1}}
+            </td>
+            <td>
+                {{item.choice_2}}
+            </td>
+            <td>
+                {{item.choice_3}}
+            </td>
+            <td>
+                {{item.choice_4}}
+            </td>
+
+
+            
+             </tr>
+             {% endfor %}
+			 </tbody>
+            
+
+
+
+        </table>
+        <div>
+        <p>
+        SOME DETAILS OF THE EXAMINATION TO BE CONDUCTED ARE:
+        </p>
+        <p>EXAM TYPE :{{ETyPE}}</p>
+        <p>TOTAL MARKS:{{EMarks}}</p>
+        <p>DATE OF EXAMINATION:{{DateE}}</p>
+        <p>Exam Start Time :{{EST}}</p>
+        <p>Exam End Time :{{EET}}</p>
+        
+
+    </div>
+        <h2 style="background-color: rgb(255, 255, 128);"> Selected Questions</h2>
+        <table border="1" class="gridtable" id="secondTable">
+                <thead>
+                        <tr><th>Question Text  </th><th>CO</th><th>UNIT Num</th><th>
+                            BLoom Level</th> <th>MAX MARKS</th><th>MIN MARKS </th>
+                            <th>QTYPE</th><th>OPTION 1</th><th>OPTION 2</th><th>OPTION 3</th><th>OPTION 4</th>
+                         </tr>
+                         </th>
+                </thead>  
+                <tbody>
+
+                </tbody>       
+
+        </table>
+       
+
+        <button onclick="getAnalysis()">CREATE REPORT</button>
+    </div>
+    
+        <div>
+            <h3>  UNIT WISE QUESTION DISTRIBUTION</h3>
+        <canvas id="myChart" width="400" height="200" style="visibility: hidden"></canvas> 
+        </div>
+        
+        
+        <div>
+            <h3>  BLOOMS LEVEL WISE DISTRIBUTION</h3>
+        <canvas id="myChart2" width="400" height="200" style="visibility: hidden" ></canvas>
+        </div>
+        <div>
+            <h3>COURSE OUTCOME WISE DISTRIBUTION
+            </h3>
+            <canvas id="myChart3" width="400" height="200" style="visibility: hidden" ></canvas>
+
+        </div>
+
+        <button onClick="CREATEQP()">GENERATE QUESTION PAPER
+        </button>
+        
+        
+    
+        
+
+       
+				
+		
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script type="text/javascript"> window.CSRF_TOKEN = "{{ csrf_token }}"; </script> 
+		
+		<script>	
+            var Qtarray=[],QCo=[],QUnum=[],BLooomL=[],MaxM=[],MinM=[],Qtype=[],chch1=[],chch2=[],chch3=[],chch4=[]	
+            $(document).ready(function () {	
+                //=================================================================
+                //click on table body
+				//$("#tableMain tbody tr").click(function () {
+				$('#tableMain tbody').on('click', 'tr', function() {
+					//get row contents into an array
+                    var tableData = $(this).children("td").map(function() {
+                        return $(this).text();
+                    }).get();
+                    //var td=tableData[0] +  '*' +  tableData[1] + '*' + tableData[2] + '*' +  tableData[3] + '*' + tableData[4];
+                   //  alert(td);
+                   var QText=tableData[0];
+                   var CO=tableData[1];
+                   var Unit_num=tableData[2];
+                   var BloomL=tableData[3];
+                   var Max_marks=tableData[4];
+                   var Min_marks=tableData[5];
+                   var QTYPE=tableData[6];
+                   var choice_1=tableData[7];
+                   var choice_2=tableData[8];
+                   var choice_3=tableData[9];
+                   var choice_4=tableData[10];
+                   console.log("Values retrived");
+
+                   var finans="<tr><td>"+QText+"</td><td>"+CO+"</td><td>"+Unit_num+"</td><td>"+BloomL+"</td><td>"+Max_marks+"</td><td>"+Min_marks+"</td><td>"+QTYPE+"</td><td>"+choice_1+"</td><td>"+choice_2+"</td><td>"+choice_3+"</td><td>"+choice_4+"</td></tr>";
+                   $('#secondTable > tbody').append(finans);
+
+                   console.log("Query Fired");
+
+				});
+				
+			
+            });	
+            $('#secondTable tbody').on('click', 'tr', function() {
+                //get row contents into an array
+                $(this).closest('tr').remove();
+                });
+
+
+            function CREATEQP()
+            {   //Qtarray=[],QCo=[],QUnum=[],BLooomL=[],MaxM=[],MinM=[],Qtype=[],chch1=[],chch2=[],chch3=[],chch4=[]
+
+                console.log("ewww its calling till here")
+                $.ajax({
+                    type: 'POST',
+                  
+                    url: '/gen_qp',
+                    data: {csrfmiddlewaretoken: window.CSRF_TOKEN,'Qtarray[]':Qtarray,'QCo[]':QCo,'QUnum[]':QUnum,'BLooomL[]':BLooomL,'MaxM[]':MaxM,'MinM[]':MinM,'Qtype[]':Qtype,'chch1[]':chch1,'chch2[]':chch2,'chch3[]':chch3,'chch4[]':chch4},
+                });
+
+
+
+            }    
+            
+            function getAnalysis()
+            {
+                 var table1 =document.getElementById("secondTable");
+                //var Qtarray=[],QCo=[],QUnum=[],BLooomL=[],MaxM=[],MinM=[],Qtype=[],chch1=[],chch2=[],chch3=[],chch4=[]
+                 for (var i=1;i<table1.rows.length;i++){
+                    Qtarray[i-1]=table1.rows[i].cells[0].innerHTML;
+                    QCo[i-1]=table1.rows[i].cells[1].innerHTML;
+                    QUnum[i-1]=table1.rows[i].cells[2].innerHTML;
+                    BLooomL[i-1]=table1.rows[i].cells[3].innerHTML;
+                    MaxM[i-1]=table1.rows[i].cells[4].innerHTML;
+                    MinM[i-1]=table1.rows[i].cells[5].innerHTML;
+                    Qtype[i-1]=table1.rows[i].cells[6].innerHTML;
+                    chch1[i-1]=table1.rows[i].cells[7].innerHTML;
+                    chch2[i-1]=table1.rows[i].cells[8].innerHTML;
+                    chch3[i-1]=table1.rows[i].cells[9].innerHTML;
+                    chch4[i-1]=table1.rows[i].cells[10].innerHTML;
+
+                   // console.log(Qtarray,QCo);
+                  // document.body.innerHTML="";
+                //  document.getElementById("DIV1").style.visibility="hidden";
+                  document.getElementById("myChart").style.visibility="visible";
+                 
+                 // var dcm=document.getElementById("secondTable");
+                  //console.log(dcm);
+                  console.log("EWW DONE");
+                  console.log(myChart.data.datasets[0].data)
+                  myChart.data.datasets[0].data=[2,3,5,7,1,9];
+                 myChart.update();
+                //console.log(myChart.data.datasets[0].data)
+
+                //UNit wise distribution LOgiC
+
+                UWDATA=[0,0,0,0,0,0];
+                for(var i=0;i<QUnum.length;i++)
+                {
+
+                    if(Number(QUnum[i]==1))
+                    {
+                        UWDATA[0]++;
+
+                    }
+                    else if(Number(QUnum[i]==2))
+                    {
+                        UWDATA[1]++;
+                        
+                    }
+                    else if(Number(QUnum[i]==3))
+                    {
+                        UWDATA[2]++;
+                        
+                    }
+                    else if(Number(QUnum[i]==4))
+                    {
+                        UWDATA[3]++;
+                        
+                    }
+                    else if(Number(QUnum[i]==5))
+                    {
+                        UWDATA[4]++;
+                        
+                    }
+                    else if(Number(QUnum[i]==6))
+                    {
+                        UWDATA[5]++;
+                        
+                    }
+                }
+                myChart.data.datasets[0].data=UWDATA;
+                myChart.update();
+                document.getElementById("myChart2").style.visibility="visible";
+
+                BLOOML=[0,0,0,0,0,0]
+                for(var i=0;i<BLooomL.length;i++)
+                {
+
+                    if(Number(BLooomL[i]==1))
+                    {
+                        BLOOML[0]++;
+
+                    }
+                    else if(Number(BLooomL[i]==2))
+                    {
+                        BLOOML[1]++;
+                        
+                    }
+                    else if(Number(BLooomL[i]==3))
+                    {
+                        BLOOML[2]++;
+                        
+                    }
+                    else if(Number(BLooomL[i]==4))
+                    {
+                        BLOOML[3]++;
+                        
+                    }
+                    else if(Number(BLooomL[i]==5))
+                    {
+                            BLOOML[4]++;
+                        
+                    }
+                    else if(Number(BLooomL[i]==6))
+                    {
+                        BLOOML[5]++;
+                        
+                    }
+                }
+                myChart2.data.datasets[0].data=BLOOML;
+                myChart2.update();
+
+                document.getElementById("myChart3").style.visibility="visible";
+
+                COUTCOME=[0,0,0,0,0]
+                console.log(QCo);
+
+                for(var i=0;i<QCo.length;i++)
+                {
+                    if(Number(QCo[i]==1))
+                        COUTCOME[0]++;
+
+                    else if(Number(QCo[i]==2))
+                        COUTCOME[1]++;    
+                    else if(Number(QCo[i]==3))
+                        COUTCOME[2]++;
+                    else if(Number(QCo[i]==4))
+                        COUTCOME[3]++; 
+                    else if(Number(QCo[i]==5))
+                        COUTCOME[4]++;       
+                }
+
+                myChart3.data.datasets[0].data=COUTCOME;
+                myChart3.update();
+
+
+
+               
+                 }
+
+            }
+
+
+var ctx = document.getElementById("myChart"); 
+var myChart = new Chart(ctx, { 
+  type: 'bar', 
+  data: { 
+    labels: ["UNIT 1", "UNIT 2" , "UNIT 3" , "UNIT 4", "UNIT 5", "UNIT 6"], 
+    datasets: [ 
+      { label: '# of students', 
+        data: [0,0,0,0,0,0], 
+        backgroundColor :['rgba(255, 99, 132, 0.2)', 
+                'rgba(54, 162, 235, 0.2)', 
+                'rgba(255, 206, 86, 0.2)', 
+                'rgba(75, 192, 192, 0.2)', 
+                'rgba(153, 102, 255, 0.2)', 
+                'rgba(255, 159, 64, 0.2)' 
+], 
+  
+borderColor: [ 
+                'rgba(255,99,132,1)', 
+                'rgba(54, 162, 235, 1)', 
+                'rgba(255, 206, 86, 1)', 
+                'rgba(75, 192, 192, 1)', 
+                'rgba(153, 102, 255, 1)', 
+                'rgba(255, 159, 64, 1)' 
+            ], 
+borderWidth : 1 
+      } 
+    ] 
+  }, 
+  options: { 
+        scales: { 
+            yAxes: [{ 
+                ticks: { 
+                    beginAtZero:true 
+                } 
+            }] 
+        } 
+    } 
+}); 
+
+
+
+
+var ctx2 = document.getElementById("myChart2"); 
+var myChart2 = new Chart(ctx2, { 
+  type: 'bar', 
+  data: { 
+    labels: ["LEVEL 1", "LEVEL 2" , "LEVEL 3" , "LEVEL 4", "LEVEL 5", "LEVEL 6"], 
+    datasets: [ 
+      { label: '# of students', 
+        data: [1,2,3,4,5,6], 
+        backgroundColor :['rgba(255, 99, 132, 0.2)', 
+                'rgba(54, 162, 235, 0.2)', 
+                'rgba(255, 206, 86, 0.2)', 
+                'rgba(75, 192, 192, 0.2)', 
+                'rgba(153, 102, 255, 0.2)', 
+                'rgba(255, 159, 64, 0.2)' 
+], 
+  
+borderColor: [ 
+                'rgba(255,99,132,1)', 
+                'rgba(54, 162, 235, 1)', 
+                'rgba(255, 206, 86, 1)', 
+                'rgba(75, 192, 192, 1)', 
+                'rgba(153, 102, 255, 1)', 
+                'rgba(255, 159, 64, 1)' 
+            ], 
+borderWidth : 1 
+      } 
+    ] 
+  }, 
+  options: { 
+        scales: { 
+            yAxes: [{ 
+                ticks: { 
+                    beginAtZero:true 
+                } 
+            }] 
+        } 
+    } 
+});  
+
+var ctx3 = document.getElementById("myChart3"); 
+var myChart3 = new Chart(ctx3, { 
+  type: 'bar', 
+  data: { 
+    labels: ["CO 1", "CO 2" , "CO 3" , "CO 4", "CO 5"], 
+    datasets: [ 
+      { label: '# of students', 
+        data: [0,0,0,0,0], 
+        backgroundColor :['rgba(255, 99, 132, 0.2)', 
+                'rgba(54, 162, 235, 0.2)', 
+                'rgba(255, 206, 86, 0.2)', 
+                'rgba(75, 192, 192, 0.2)', 
+                'rgba(153, 102, 255, 0.2)' 
+                
+], 
+  
+borderColor: [ 
+                'rgba(255,99,132,1)', 
+                'rgba(54, 162, 235, 1)', 
+                'rgba(255, 206, 86, 1)', 
+                'rgba(75, 192, 192, 1)', 
+                'rgba(153, 102, 255, 1)'
+                
+            ], 
+borderWidth : 1 
+      } 
+    ] 
+  }, 
+  options: { 
+        scales: { 
+            yAxes: [{ 
+                ticks: { 
+                    beginAtZero:true 
+                } 
+            }] 
+        } 
+    } 
+});
+
+		</script>
+		
+
+        
+    </body>
+
+
+
+
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+
+<body>
+    
+        <table>
+            <tr>
+                <td>ENTER TOTAL NUMBER OF QUESTIONS:</td>
+            
+            <td>
+                <input type="number" id="num"> 
+            </td>
+            <tr>
+                <td>
+                   <button onclick="StartTakingSubQ()"> ENTER</button> 
+                </td>
+            </tr>
+        </table>
+
+    
+   
+        <table>
+            <tr>
+                <td id="subq"> </td><td><input type="number" id="subqn"></td>
+            </tr>
+            <tr>
+                <td id="totalcomp"></td><td><input type="number" id="tcn"></td>
+            </tr>
+
+            <tr><td><button onclick="RetrData()">Add</button></td></tr>
+            <tr><td><button onclick="startIter()">NEXT</button></td></tr>
+        </table>
+        <table>
+           
+            <tr><td><button onclick="ProceedNP()">PROCEED FURTHER</button></td></tr>
+        </table>
+    
+    <script>
+
+        var SubQC=[],varCompC=[]
+        var arrayi=0
+        Index_count=0;
+        var totq=0;
+        function StartTakingSubQ()
+        {
+            totq=Number(document.getElementById("num").value)
+           
+            startIter()
+        }
+
+        function startIter()
+        {  
+            console.log("inside start Iter")
+            console.log(Index_count)
+            console.log("The value of ",totq)
+            if(Index_count<=totq)
+            {
+                console.log("Index count is ",Index_count)
+                Index_count++;
+                var tdsubq=document.getElementById("subq")
+                var totalcomp=document.getElementById("totalcomp")
+                tdsubq.innerHTML="Enter total subquestions for Question No. "+Index_count;
+                totalcomp.innerHTML="Enter total compulsory Questions for Question No."+Index_count;
+
+                return;
+            }
+            
+        }
+
+        function RetrData()
+        {
+            subqs=document.getElementById("subqn")
+            tcomp=document.getElementById("tcn")
+
+            SubQC[arrayi]=Number(subqs.value)
+            CompC[arrayi]=Number(tcomp.value)
+            arrayi++
+            console.log(subqs.value);
+            console.log(tcomp.value);
+
+            startIter()
+
+            return;
+            
+
+        }
+
+        function ProceedNP()
+        {
+            alert("INSID PROCEED");
+           
+
+            
+
+        }
+    </script>
+</body>
+<html>

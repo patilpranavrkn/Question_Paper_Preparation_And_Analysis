@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+<style type="text/css">
+</style>
+
+
+
+
+
+</head>
+<body>
+
+<div class="bs-example">
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+        <a href="#" class="navbar-brand">Question Paper Preparation and Analysis</a>
+        <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+          
+            <div class="navbar-nav ml-auto">
+                <a href="#" class="nav-item nav-link">Logout</a>
+            </div>
+        </div>
+    </nav>
+</div>
+    <div class="container">
+        <form action='InsertMapCT'>
+            <div class="form-group">
+                <label for="firsb">Select Teacher Name:</label>
+                <select class="form-control" id="firsb"  name="tname"> 
+                    {% for i in Teacher_list %}
+                    <option value="{{i.Teach_uname}}">{{i.Teach_name}}</option>
+                    {% endfor %}
+                 
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="secsb">Select Course Name</label>
+                <select class="form-control" id="firsb"  name="Ccode"> 
+                    {% for i in Course_list %}
+                    <option value="{{i.Course_code}}">{{i.Course_name}}</option>
+                    {% endfor %}
+          {% endfor %}
+                </select>
+              </div>
+              <div class="form-group">
+                <p>SELECT ROLE :</p>
+                <label class="radio-inline">
+                    <input type="radio" name="role" checked value="CT">Course Teacher
+                  </label>
+                  <label class="radio-inline">
+                    <input type="radio" name="role" value="CC">Course Coordinator
+                  </label>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="ASSIGN" id="submit" name="submit">
+
+                
+            </div>
+
+
+
+              </form>
+    </div>
+
+</body>
+</html>

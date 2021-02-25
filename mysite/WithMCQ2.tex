@@ -1,0 +1,86 @@
+\documentclass[12pt]{article}
+\usepackage{graphicx}
+\usepackage{ragged2e}
+\usepackage{array}
+\usepackage{amsmath,xparse}
+\newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\begin{document}
+	\centering{KOLHAPUR INSTITUTE OF TECHNOLOGY'S}\par
+	COLLEGE OF ENGINEERING (AUTONOMOUS),KOLHAPUR
+	\par\noindent\rule{\textwidth}{0.4pt}
+	
+	\centering{\VAR{exam}}\par
+	\centering{\VAR{ExamType}}\par
+	\centering{\VAR{subt}}\par
+	\begin{flushleft}
+		Day and Date :{\VAR{date}}\hspace{5.5cm}PRN:
+	\end{flushleft}
+	
+	\begin{flushleft}
+		Time :{\VAR{etime}}\hspace{7cm}Max Marks:{\VAR{maxm}}\\
+	\end{flushleft}
+	\noindent\rule{\textwidth}{0.1pt}
+\begin{flushleft}
+	{\bf Instructions:}\\
+	{\hspace{0.5cm} \bf IMP: Verify that you have received question paper with correct course, code, branch, etc}\\
+	\hspace{1cm}i) All Questions are Compulsory\\
+	\hspace{1cm}ii)Figure to right indicate full marks\\
+	\hspace{1cm}iii)Assume suitable data wherever necessary\\
+\end{flushleft}
+
+	\begin{flushleft}
+	\bf{QNo}\hspace{1.2cm} \bf{Question} \hspace{5.5cm}  \bf{Marks} \hspace{0.2cm} \bf{CO} \hspace{0.2cm}	\bf{BL}	
+	
+\end{flushleft} 
+	\begin{tabular}{|L{1cm}|L{8cm}|C{1cm}|C{1cm}|C{1cm}|}\hline
+		\bf{1}. & \bf{Attempt} \bf\VAR{compulsorym} \bf{out} of \bf\VAR{Subq} & \bf\VAR{firstqmax}  & & \\ \hline
+		\BLOCK{ for i in range(0,mcQuest)}
+		\VAR{mcQuestArr[i]} & \VAR{questMCq[i]} \newline
+			\BLOCK{ if BImageFieldM[i][y] }
+		\begin{center}
+			\includegraphics[width=4cm,height=3cm]{media/\VAR{ImageFieldM[i][y]}}\\
+			\bf{Figure }\bf\VAR{mcQuestArr[i]}		
+		\end{center}
+		\BLOCK{ endif }
+		
+		A)\VAR{mcqList[i][0]}\newline
+		B)\VAR{mcqList[i][1]}\newline
+		C)\VAR{mcqList[i][2]}\newline
+		D)\VAR{mcqList[i][3]} &
+		\VAR{selM[i]} &
+		CO\VAR{coM[i]}&
+		\VAR{bloomM[i]} \\ \hline
+		
+		\BLOCK{ endfor }
+
+	\end{tabular}
+
+	\BLOCK{ for i in range(0,thrQuest)}
+\begin{tabular}{L{1cm}L{8cm}C{1cm}C{1cm}C{1cm}}
+	\bf\VAR{i+2}. & \bf{Attempt} \bf{\VAR{compthr[i]}} \bf{out of} \bf{\VAR{subthr[i]}} & \bf{\VAR{mxm[i]}}  & & \\ \hline
+\end{tabular}
+
+
+
+\begin{tabular}{|L{1cm}|L{9cm}|C{2cm}|C{2cm}|C{1cm}|}
+	\BLOCK{ for y in range(0,subthr[i])}
+	\VAR{thrQuestArr[i][y]} &
+	\VAR{questTHr[i][y]} \newline
+		\BLOCK{ if BImageFieldT[i][y] }
+	\begin{center}
+		\includegraphics[width=4cm,height=3cm]{media/\VAR{ImageFieldT[i][y]}}\\\bf{Figure }\bf\VAR{thrQuestArr[i][y]}		
+	\end{center}
+	\BLOCK{ endif }
+	
+	 &  \VAR{selT[i][y]} & CO\VAR{coT[i][y]} & \VAR{bloomT[i][y]}\\ \hline
+	\BLOCK{ endfor }
+\end{tabular}
+
+
+\BLOCK{ endfor }
+
+\end{document}
+	
+	

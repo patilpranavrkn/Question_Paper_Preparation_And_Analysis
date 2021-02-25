@@ -1,0 +1,60 @@
+<html>
+    <head>
+        <style>
+        </style>
+        </head>
+        <body>
+            <h2 align=center>COURSE NAME {{Course_name}}</h2>
+            <h2 align=center>CURRENT COURSE UNIT DETAILS</h2>
+            <table border='1' align=center style="margin: 0px auto;">
+                <thead>
+                    <tr><td>Unit_num</td>
+                    <td>Unit_name</td>
+                    <td>Unit_Text</td>
+                    <td>Total Marks</td>
+                    </tr>
+                    
+                </thead>
+                    <tbody>
+                        {% for i in Unit_det  %}
+                    <tr>
+                        <td>{{i.Unit_num}}</td>
+                        <td>{{i.Unit_name}}</td>
+                        <td>{{i.Unit_details}}</td>
+                        <td>{{i.Unit_marks}}</td>
+                    </tr>
+                    {% endfor %}
+
+                    </tbody>
+                 
+
+
+
+            </table>
+
+            <h2 align=center>ADD UNIT DETAILS</h2>
+            <form action='InsertUd'>
+                <table align=center style="margin: 0px auto;">
+                    <tr>
+                        <td>Add Unit Number :</td>
+                        <td><input type="number" id="uid" name="nu"></td>
+                    </tr>
+                    <tr><td>
+                        Add Unit Name:
+                    </td><td><input type=text name="uname"></td></tr>
+                    <tr>
+                        <td>Unit Details</td>
+                        <td><input type=text name="udet"></td>
+                    </tr>
+                    <tr>
+                        <td>Add Unit Marks :</td>
+                        <td><input type="number" name="marks"></td>
+                    </tr>
+                    <tr>
+                        <td><input type="submit" value="ADD"></td>
+                    </tr>
+                </table>
+            </form>
+
+        </body>
+</html>  

@@ -1,0 +1,112 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+<style type="text/css">
+#qpna
+	{
+	 font-size:30px;
+	
+  }
+  .sizel
+  {
+    font-size:20px;
+  }
+</style>
+
+</head>
+<body>
+<nav class="navbar navbar-inverse bg-dark navbar-dark">
+        <div class="container-fluid">
+	 <a class="navbar-brand" href="#">
+          <img src="{% static 'kitimage.jpg'  %}" alt="" height="60" width="120">
+        </a>
+          <div class="navbar-header">
+            <a class="navbar-brand" href="#" id="qpna">QUESTION PAPER PREPARATION AND ANALYSIS</a>
+          </div>
+		 
+         
+    
+          <ul class="nav navbar-nav navbar-right">
+    
+            <li><a href="#">Logged in as :{{Eusername}}</a></li>
+            <li><a  href="#" data-toggle="modal" data-target="#logoutModal" ><span class="glyphicon glyphicon-log-in"></span> LOGOUT </a></li>
+          </ul>
+        </div>
+      </nav>
+	 	<div class="modal" id="logoutModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+	   <h4>Logout Confirmation<i class="fa fa-lock"></i></h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+       
+      </div>
+      <div class="modal-body">
+        <p><i class="fa fa-question-circle"></i> Are you sure you want to Logout? <br /></p>
+        <div class="actionsBtns">
+            <form action="/logout" method="post">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <input type="submit" class="btn btn-default btn-primary" data-dismiss="modal" value="Logout" onclick="execLogout()" />
+	                <button class="btn btn-default" data-dismiss="modal">Cancel</button>
+            </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 
+    <div class="container">
+        <h2>Enter Details of The Teacher</h2>
+        <form action='InsertTeacher' method="POST">
+          {% csrf_token %}
+            <div class="form-group">
+
+                <label for="tid" class="sizel">Teacher's ID :</label>
+                <input type=text class="form-control" id="tid" name="tid" required size="50">
+            </div>
+            <div class="form-group">
+
+                <label for="tname" class="sizel">Teacher's Name :</label>
+                <input type=text class="form-control" id="tname" name="tname" required size="50">
+            </div>
+            <div class="form-group">
+
+                <label for="uname" class="sizel">Teacher's Username:</label>
+                <input type=text class="form-control" id="uname" name="uname" required size="50">
+            </div>
+            <div class="form-group">
+
+                <label for="tpass" class="sizel">Teacher's Password:</label>
+                <input type=text class="form-control" id="tpass" name="tpass" required size="50">
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="CREATE TEACHER" id="submit" name="submit" class="btn-success">
+
+                
+            </div>
+
+        </form>
+        
+    </div> 
+
+		<script>
+			function execLogout()
+	{
+		window.location.href="Logout";
+	
+	}
+	
+    </script>	
+
+
+</body>
+
+</html>

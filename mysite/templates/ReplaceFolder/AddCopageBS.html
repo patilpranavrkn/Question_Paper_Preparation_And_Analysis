@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h2>COURSE NAME {{Course_name}}</h2>
+            <h2>CURRENT COURSE OUTCOMES</h2>
+            <table class="table table-striped">
+                <thead>
+                    <tr><td>CO Num</td>
+                    <td>Course Outcome</td>
+                    </tr>
+                    
+                </thead>
+                <tbody>
+                    {% for i in CO_DET  %}
+                <tr>
+                    <td>{{i.Outcome_no}}</td>
+                    <td>{{i.Outcome_Text}}</td>
+                </tr>
+                {% endfor %}
+
+                </tbody>
+
+            </table>
+
+    </div>
+    <div class="container">
+        <h2>ADD CO DETAILS</h2>
+        <form action='InsertCo'>
+            <div class="form-group">
+
+                <label for="NO">ENTER OUTCOME NO:</label>
+                <input type=number class="form-control" id="NO" name ="NO" required size="50">
+            </div>
+
+            <div class="form-group">
+
+                <label for="OD">OUTCOME DETAILS :</label>
+                <input type=text class="form-control" id="OD" name ="OD" required size="50">
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="ADD THESE CO" >
+    
+                
+            </div>
+
+
+        </form>
+
+        
+         
+
+
+    </div>
+</body>
+</html>

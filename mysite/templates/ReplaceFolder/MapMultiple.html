@@ -1,0 +1,37 @@
+<html>
+    <head>
+        <style>
+            #firsb{
+                width: 175px;
+               }
+            #secsb{
+                width: 175px;
+               
+                   }
+                   .form-field * {
+                    vertical-align: middle;
+                }
+            
+         
+        </style>
+    </head>
+    <body>
+
+        <h2 align=center> Welcome Teacher {{teausername}}</h2>
+        <h1 align=center> Select any of the following subjects :</h1>
+        <form action="mapmults"><table>
+            <tr>
+                <select name="select_course" id="firsb">
+                    {% for i in courses %}
+                    <option value="{{i.Course_code}}#{{i.Rights}}">{{i.Course_name}} -- {{i.Rights}}</option>
+                    {% endfor %}
+                </select>
+            </tr>
+           <tr><td><input type="submit" value="SELECT COURSE"></td> </tr>
+
+        </table></form>
+       
+
+
+    </body>
+</html>

@@ -1,0 +1,197 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+ 
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+   <link href="{% static 'BOOTSTRAP/css/bootstrap.min.css' %}" rel="stylesheet">
+  <script src="{% static 'BOOTSTRAP/js/bootstrap.min.js' %}"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+  <script type="text/javascript"> window.CSRF_TOKEN = "{{ csrf_token }}"; </script> 
+<style type="text/css">
+  .container {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+	 }
+	#qpna
+	{
+	 font-size:30px;
+	
+	}
+    
+
+</style >
+
+</head>
+
+
+<body>
+<nav class="navbar navbar-inverse bg-dark navbar-dark">
+        <div class="container-fluid">
+	 <a class="navbar-brand" href="#">
+      <img src="{% static 'kitimage.jpg'  %}" alt="" height="60" width="120">
+	  </a>
+          <div class="navbar-header">
+            <a class="navbar-brand" href="#" id="qpna">QUESTION PAPER PREPARATION AND ANALYSIS</a>
+          </div>
+		 
+         
+    
+          <ul class="nav navbar-nav navbar-right">
+    
+            <li><a href="#">Logged in as :{{Eusername}}</a></li>
+            <li><a  href="changePW"  ><span class="glyphicon glyphicon-log-in"></span> CHANGE PASSWORD </a></li>
+            <li><a  href="#" data-toggle="modal" data-target="#logoutModal" ><span class="glyphicon glyphicon-log-in"></span> LOGOUT </a></li>
+            
+          </ul>
+        </div>
+      </nav>
+	<div class="modal" id="logoutModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+	   <h4>Log Out <i class="fa fa-lock"></i></h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+       
+      </div>
+      <div class="modal-body">
+        <p><i class="fa fa-question-circle"></i> Are you sure you want to Logout? <br /></p>
+        <div class="actionsBtns">
+            <form action="/logout" method="post">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <input type="submit" class="btn btn-default btn-primary" data-dismiss="modal" value="Logout" onclick="execLogout()" />
+	                <button class="btn btn-default" data-dismiss="modal">Cancel</button>
+            </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 
+
+<br>
+<div class="container">
+  <h3 style="color:red;">COURSE :{{Course_name}}</h3>
+
+</div>
+<br>
+  <div class="container" >
+    <button type="button" class="btn btn-primary btn-lg" onclick="openfunc1()">ADD NEW QUESTION</button>
+
+
+</div>
+<br>
+<div class="container">
+    <button type="button" class="btn btn-primary btn-lg" onclick="openfunc2()">CREATE QUESTION PAPER</button>
+
+
+</div>
+<br>
+<div class="container">
+    <button type="button" class="btn btn-primary btn-lg" onclick="openfunc3()">ANALYZE COURSE QUESTIONS</button>
+
+
+</div>
+<br>
+<div class="container">
+    <button type="button" class="btn btn-primary btn-lg" onclick="openfunc4()">ADD COURSE  OUTCOMES</button>
+  
+
+</div>
+<br>
+<div class="container">
+  <button type="button" class="btn btn-primary btn-lg" onclick="openfunc5()">ADD UNIT DETAILS</button>
+
+
+</div>
+<br>
+<div class="container">
+  <button type="button" class="btn btn-primary btn-lg" onclick="openfunc6()">DELETE QUESTIONS</button>
+
+</div>
+<br>
+<div class="container">
+  <button type="button" class="btn btn-primary btn-lg" onclick="openfunc7()">DELETE COURSE OUTCOMES</button>
+
+</div>
+<br>
+<div class="container">
+  <button type="button" class="btn btn-primary btn-lg" onclick="openfunc8()">DELETE UNIT DETAILS</button>
+
+</div>
+<br>
+<div class="container">
+  <button type="button" class="btn btn-primary btn-lg" onclick="openfunc9()">EXAM INSTANCE DETAILS</button>
+
+</div>
+<br>
+
+<script>
+  function openfunc1()
+  {
+   console.log("Inside func1")
+   window.location.href="ChooseQtype"
+     
+  }
+  function openfunc2()
+  {
+    console.log("Inside func2")
+    window.location.href="CreatePaper"
+     
+  }
+  function openfunc3()
+  {
+   console.log("Inside func3")
+   window.location.href="AnalyzeCQ"
+     
+  }
+  function openfunc4()
+  {
+   console.log("Inside func3")
+   window.location.href="AddCO"
+     
+  }
+  function openfunc5()
+  {
+   console.log("Inside func3")
+   window.location.href="AddUD"
+    
+  }
+
+  function openfunc6()
+  {
+
+    window.location.href="Delete_questions"
+  }
+
+  function openfunc7()
+  {
+    window.location.href="Delete_Co"
+  }
+  function openfunc8()
+  {
+    window.location.href="Delete_unitD"
+
+  }
+   function openfunc9()
+   {
+     window.location.href="Instance_det"
+   }
+		function execLogout()
+	{
+		window.location.href="Logout";
+	
+	}
+
+
+</script>
+</body>
+
+</html>

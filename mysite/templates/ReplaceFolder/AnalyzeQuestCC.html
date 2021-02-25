@@ -1,0 +1,248 @@
+{% load static %}
+<!DOCTYPE html>
+
+
+<html>
+    <head>
+    </script> 
+    <script src=" {% static 'vendor/jquery/jquery-3.2.1.min.js' %}"></script>
+    <style type="text/css">
+        
+    </style>
+    
+
+</head>
+<body>
+    <h2>Course Name {{course_name}}</h2>
+    <div id="DIV1">
+        <h2 style="background-color:DodgerBlue;"> Select Any of  the below theory questions to APPROVE THEM.</h2>
+         
+        <table border="1" class="gridtable" id="tableMain">
+		<thead>
+            <tr><th>Question ID</th><th>Question Text  </th><th>CO</th><th>UNIT Num</th><th>
+                BLoom Level</th> <th>MAX MARKS</th><th>MIN MARKS </th>
+              <th>OPTION 1</th><th>OPTION 2</th><th>OPTION 3</th><th>OPTION 4</th>
+             </tr>
+			 </th>
+			 <tbody>
+             {% for item in mcq_ques %}
+             <tr>
+                 <td>
+                     {{item.id}}
+                 </td>
+                 
+            <td>
+                {{item.Qtext}}
+            </td>
+            <td>
+                {{item.Co}}
+            </td>
+            <td>
+                {{item.unit_num}}
+            </td>
+            <td>
+                {{item.BloomL}}
+            </td>
+            <td>
+                {{item.max_marks}}
+            </td>
+            <td>
+                {{item.min_marks}}
+            </td>
+           
+            <td>
+                {{item.choice_1}}
+            </td>
+            <td>
+                {{item.choice_2}}
+            </td>
+            <td>
+                {{item.choice_3}}
+            </td>
+            <td>
+                {{item.choice_4}}
+            </td>
+
+
+            
+             </tr>
+             {% endfor %}
+			 </tbody>
+            
+
+
+
+        </table>
+        <div>
+
+            <body>
+                <div id="DIV2">
+                <h2 style="background-color:DodgerBlue;"> Select Any of  the below MCQ questions to add it to APPROVE THEM.</h2>
+                 
+                <table border="1" class="gridtable" id="tableMain2">
+                <thead>
+                    <tr><th>Question ID</th><th>Question Text  </th><th>CO</th><th>UNIT Num</th><th>
+                        BLoom Level</th> <th>MAX MARKS</th><th>MIN MARKS </th>
+                      
+                     </tr>
+                     </th>
+                     <tbody>
+                     {% for item in thr_ques %}
+                     <tr>
+                         <td>
+                             {{item.id}}
+                         </td>
+                         
+                    <td>
+                        {{item.Qtext}}
+                    </td>
+                    <td>
+                        {{item.Co}}
+                    </td>
+                    <td>
+                        {{item.unit_num}}
+                    </td>
+                    <td>
+                        {{item.BloomL}}
+                    </td>
+                    <td>
+                        {{item.max_marks}}
+                    </td>
+                    <td>
+                        {{item.min_marks}}
+                    </td>
+                    
+                     </tr>
+                     {% endfor %}
+                     </tbody>
+                </table>
+                <div> 
+
+
+                    
+                    <h2 style="background-color: rgb(255, 255, 128);"> Selected Questions MCQ</h2>
+                    <table border="1" class="gridtable" id="secondTablemcq">
+                            <thead>
+                                    <tr><th>Question ID</th><th>Question Text  </th><th>CO</th><th>UNIT Num</th><th>
+                                        BLoom Level</th> <th>MAX MARKS</th><th>MIN MARKS </th>
+                                        <th>QTYPE</th><th>OPTION 1</th><th>OPTION 2</th><th>OPTION 3</th><th>OPTION 4</th>
+                                     </tr>
+                                     </th>
+                            </thead>  
+                            <tbody>
+            
+                            </tbody>       
+            
+                    </table>
+
+                    <h2 style="background-color: rgb(255, 255, 128);"> Selected Questions THEORY</h2>
+                    <table border="1" class="gridtable" id="secondTablethr">
+                            <thead>
+                                    <tr><th>Question ID</th><th>Question Text  </th><th>CO</th><th>UNIT Num</th><th>
+                                        BLoom Level</th> <th>MAX MARKS</th><th>MIN MARKS </th>
+                                        
+                                     </tr>
+                                     </th>
+                            </thead>  
+                            <tbody>
+            
+                            </tbody>       
+            
+                    </table>  
+</div>
+</div>
+<br>
+<button onclick="Analyzethese()">APPROVE THESE SELECTED QUESTIONS</button>
+<script>
+    $('#tableMain tbody').on('click', 'tr', function() {
+        //get row contents into an array
+        var tableData = $(this).children("td").map(function() {
+            return $(this).text();
+        }).get();
+        //var td=tableData[0] +  '*' +  tableData[1] + '*' + tableData[2] + '*' +  tableData[3] + '*' + tableData[4];
+       //  alert(td);
+       var id=tableData[0];
+       var QText=tableData[1];
+       var CO=tableData[2];
+       var Unit_num=tableData[3];
+       var BloomL=tableData[4];
+       var Max_marks=tableData[5];
+       var Min_marks=tableData[6];
+       
+       
+      
+    
+       var choice_1=tableData[7];
+       var choice_2=tableData[8];
+       var choice_3=tableData[9];
+       var choice_4=tableData[10];
+       console.log("Values retrived");
+
+       var finans="<tr><td>"+id+"</td><td>"+QText+"</td><td>"+CO+"</td><td>"+Unit_num+"</td><td>"+BloomL+"</td><td>"+Max_marks+"</td><td>"+Min_marks+"</td><td>"+choice_1+"</td><td>"+choice_2+"</td><td>"+choice_3+"</td><td>"+choice_4+"</td></tr>";
+       $('#secondTablemcq > tbody').append(finans);
+
+       console.log("Query Fired");
+
+    });
+
+    $('#secondTablemcq tbody').on('click', 'tr', function() {
+        //get row contents into an array
+        $(this).closest('tr').remove();
+        });
+
+
+        $('#tableMain2 tbody').on('click', 'tr', function() {
+            //get row contents into an array
+            var tableData = $(this).children("td").map(function() {
+                return $(this).text();
+            }).get();
+            //var td=tableData[0] +  '*' +  tableData[1] + '*' + tableData[2] + '*' +  tableData[3] + '*' + tableData[4];
+           //  alert(td);
+      var id=tableData[0];
+       var QText=tableData[1];
+       var CO=tableData[2];
+       var Unit_num=tableData[3];
+       var BloomL=tableData[4];
+       var Max_marks=tableData[5];
+       var Min_marks=tableData[6];
+      
+       
+
+          
+           var finans="<tr><td>"+id+"</td><td>"+QText+"</td><td>"+CO+"</td><td>"+Unit_num+"</td><td>"+BloomL+"</td><td>"+Max_marks+"</td><td>"+Min_marks+"</td>";
+           $('#secondTablethr> tbody').append(finans);
+    
+           console.log("Query Fired");
+    
+        }); 
+        
+        $('#secondTablethr tbody').on('click', 'tr', function() {
+            //get row contents into an array
+            $(this).closest('tr').remove();
+            });
+
+         function Analyzethese()
+         {
+
+            var thrid=[],mcqid=[]
+            var table1=document.getElementById("secondTablemcq");
+            var table2=document.getElementById("secondTablethr");
+            for(var i=1;i<=table1.rows.length;i++)
+            {
+             mcqid[i-1]=table1.rows[i].cells[0].innerHTML;
+            }
+
+            for(var i=1;i<=table2.rows.length;i++)
+            {
+                thrid[i-1]=table2.rows[i].cells[0].innerHTML;
+            }
+
+            $.ajax({
+                type: 'POST',
+              
+                url: '/ver_quests',
+                data: {csrfmiddlewaretoken: window.CSRF_TOKEN,'thrid[]':thrid,'mcqid[]':mcqid},
+                });
+
+         }   
+</script>

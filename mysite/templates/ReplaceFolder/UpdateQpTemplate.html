@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+    select {
+        width: 70%;
+        padding: 16px 20px;
+        border: none;
+        border-radius: 4px;
+        background-color: #f1f1f1;
+      }
+
+</style>
+</head>     
+
+<body>
+    <h2 align="center">Enter Details of the Question Paper You want to create</h2>
+    <h3 >Select the examination</h3>
+        <form action="NewTempl1">
+            <table>
+                <tr>
+                    <td>ENTER THE EXAMINATION :</td>
+                    <td> <select name="examtype">
+                        <option val="mse">MID SEMESTER EXAMINATION </option>
+                        <option val="ese">END SEMESTER EXAMINATION</option>
+                        <option val="ise">IN SEMESTER EXAMINATION</option>
+                      </select> </td>
+
+                </tr>
+       
+        <tr>
+            <td>Enter total marks</td><td><input type="number" id="marks" name="marks">
+            </td>
+        </tr>
+        
+        
+       <tr> <td>Will the Question paper have MCQ ?</td><td><input type="radio" id="male" name="papertype" value="MCQ">MCQ</td><td>
+        <input type="radio" id="female" name="papertype" value="NOMCQ">NOMCQ</td></tr>
+       <tr><td>  <input type="submit"></td>
+      
+       </tr> 
+      
+        
+       
+    </table>
+    </form>
+        
+     
+   
+    
+</body>
+</html>

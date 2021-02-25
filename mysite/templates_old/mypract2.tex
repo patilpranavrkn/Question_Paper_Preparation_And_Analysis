@@ -1,0 +1,53 @@
+\documentclass[12pt]{article}
+\begin{document}
+	
+\centering{KOLHAPUR INSTITUTE OF TECHNOLOGY'S}\par
+COLLEGE OF ENGINEERING (AUTONOMOUS),KOLHAPUR
+\par\noindent\rule{\textwidth}{0.4pt}
+\centering{\VAR{exam}}\par
+\centering{\VAR{examt}}\par
+\centering{\VAR{subt}}\par
+\begin{flushleft}
+Day and Date :{\VAR{date}}\hspace{3.5cm}PRN:
+\end{flushleft}
+
+\begin{flushleft}
+Time :{\VAR{etime}}\hspace{3cm}Max Marks:{\VAR{mxm}}\\
+\end{flushleft}
+\noindent\rule{\textwidth}{0.1pt}
+\begin{flushleft}
+{\bf Instructions:}\\
+{\hspace{0.5cm} \bf IMP: Verify that you have received question paper with correct course, code, branch, etc}\\
+\hspace{1cm}i) All Questions are Compulsory\\
+\hspace{1cm}ii)Figure to right indicate full marks\\
+\hspace{1cm}iii)Assume suitable data wherever necessary\\
+\end{flushleft} 
+
+\begin{flushleft}
+{\bf Q.No: \hspace{2.5cm} \bf Questions \hspace{0.25cm} \bf Marks \hspace{0.25cm} \bf CO's\hspace{0.25cm} \bf Blooms Level}	
+\end{flushleft}
+
+\BLOCK{ for i in range(0,mainQuest)}
+\begin{flushleft}
+\bf \VAR{i+1} \hspace{2cm} Attempt \VAR{compulsory[i]} out of \VAR{Subq[i]}\\  
+\end{flushleft}	
+\BLOCK{ for y in range(0,Subq[i])}
+\begin{flushleft}
+ {\VAR{QN[i][y]}}\hspace{2cm}
+\VAR{Quests[i][y]} \hspace{1cm}  \VAR{Marks[i][y]} \hspace{1cm} \VAR{Co[i][y]} \hspace{1cm} \VAR{bloom[i][y]}\par
+\end{flushleft}	
+\BLOCK{ endfor }
+
+
+
+\BLOCK{ endfor }	
+	
+	
+
+
+
+
+
+
+
+\end{document}

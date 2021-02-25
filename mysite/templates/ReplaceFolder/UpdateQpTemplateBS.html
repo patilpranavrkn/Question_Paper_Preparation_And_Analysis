@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+<style type="text/css">
+</style>
+
+
+
+
+
+</head>
+<body>
+    <div class="container">
+        <h2 align="center">Enter Details of the Question Paper You want to create</h2>
+        
+        <form action="NewTempl1">
+            <div class="form-group">
+                <label for="sel1">SELECT EXAM TYPE</label>
+                <select class="form-control" id="sel1"  name="examtype">
+                    <option val="mse">MID SEMESTER EXAMINATION </option>
+                    <option val="ese">END SEMESTER EXAMINATION</option>
+                    <option val="ise">IN SEMESTER EXAMINATION</option>
+                  </select>
+                  </div>
+                  <div class="form-group">
+
+                    <label for="qt">ENTER TOTAL MARKS OF THE EXAMINATION:</label>
+                    <input type=number class="form-control" id="marks" name="marks">
+                </div>
+                <div class="form-group">
+                    <p>Do you want MCQ Questions in the question paper?</p>
+                    <label class="radio-inline">
+                        <input type="radio" name="optradio" value="MCQ">YES
+                      </label>
+                      <label class="radio-inline">
+                        <input type="radio" name="optradio" value="NOMCQ">NO
+                      </label>
+                </div>
+
+                <div class="form-group">
+                    <input type="submit" value="PROCEED TO NEXT STEP" id="submit" name="submit">
+    
+                    
+                </div>
+        </form>
+    </div>
+                
+                  
+
+
+
+
+
+
+</body>
+</html>

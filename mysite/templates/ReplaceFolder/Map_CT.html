@@ -1,0 +1,51 @@
+<html>
+    <head>
+        <style>
+            #firsb{
+                width: 175px;
+               }
+            #secsb{
+                width: 175px;
+               
+                   }
+                   .form-field * {
+                    vertical-align: middle;
+                }
+            
+         
+        </style>
+    </head>
+  <body>
+      <form action='InsertMapCT'>
+      <h2 align="center">Select Teacher </h2>
+      <div align="center">
+        <select id="firsb" name='tname'>
+          {% for i in Teacher_list %}
+          <option value="{{i.Teach_uname}}">{{i.Teach_name}}</option>
+          {% endfor %}
+          
+        </select>
+    </div>
+     
+   
+      <h2 align="center">Assign the Course</h2>
+      <div align="center">
+      <select id="secsb" name="Ccode">
+        {% for i in Course_list %}
+          <option value="{{i.Course_code}}">{{i.Course_name}}</option>
+          {% endfor %}
+      </select>
+    </div>
+    <h2 align="center">Select ROLE : </h2>
+    
+    <input type ="radio" value="CT" name="role" >Course Teacher<br>
+    <input type ="radio" value="CC" name="role">Course Coordinator<br>
+
+    <tr>
+        <input type="submit" value="MAP_CT">
+    </tr>
+    
+       
+  </body>
+  
+</html>    

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+		<script type="text/javascript" src="http://latex.codecogs.com/editor3.js"></script>
+        <script type="text/javascript"
+        src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+     </script>
+    
+<title>Page Title</title>
+<style type="text/css">
+form {
+    width: 650px;
+    margin: 0 auto;
+}
+
+#submit{
+background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 8px 18px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+
+}
+
+</style>
+</head>
+<body>
+
+    <p>\[ x^n + y^n = z^n \]</p>
+<h1 align="center" style="color:red"> Add Details of the Questions</h2>
+<form action="AddTheoryQues" method="POST"  enctype="multipart/form-data">
+    {% csrf_token %}
+<table>
+ 
+<tr>
+<td>
+    Question Text:
+</td>
+<td>
+    <input type="text" name="qt" required size="100" id="qt">
+</td>
+</tr>
+<tr>
+		<td>
+				<p><a href="javascript:OpenLatexEditor('testbox','latex','')">
+						Launch EQUATIONS CREATOR 
+						</a></p>
+		</td>
+		<td>
+				<textarea id="testbox" rows="5" cols="60"></textarea>
+		</td>
+	</tr>
+	
+	
+<tr>
+<td>Unit No:</td>
+<td>
+    
+        <select name="un">
+            {% for i in Unitd %}
+            <option value="{{i.Unit_num}}">{{i.Unit_num}} - {{i.Unit_name}}</option>
+            {% endfor %}
+           
+
+        </select>       
+</td>
+ </tr>   
+ <tr>
+    <td>
+        CO:
+    </td>
+    <td>
+			<select name="CO">
+                {% for i in Co %}
+                <option value="{{i.Outcome_no}}">{{i.Outcome_no}} - {{i.Outcome_Text}}</option>
+                {% endfor %}
+            </select>
+              
+              
+                </select>
+    </td>
+
+ </tr>
+ <tr>
+     <td>
+        Bloom's Level
+        <td>
+        
+			<select name="BL">
+                <option>1</option> 
+                <option>2</option> 
+                <option>3</option> 
+                <option>4</option> 
+                <option>5</option> 
+                <option>6</option> 
+        </select>
+     </td>
+ </tr>
+ <tr>
+    <td>
+        Maximum Marks:
+    </td>
+    <td>
+         <select name="MXM">
+            <option>1</option> 
+            <option>2</option> 
+            <option>3</option> 
+            <option>4</option> 
+            <option>5</option> 
+            <option>6</option> 
+    </select></td>  
+    </tr>
+    
+ <tr>
+     <td>
+         Minimum Marks :
+     </td>
+     <td>
+        <select name="MIM">
+            <option>1</option> 
+            <option>2</option> 
+            <option>3</option> 
+            <option>4</option> 
+            <option>5</option> 
+            <option>6</option> 
+     </select> 
+     </td>      
+ </tr>   
+ <tr>
+     <td>
+         Remarks :
+     </td>
+     <td>
+         <input type=text name="rem" size="60">
+     </td>
+
+ </tr>
+ <tr>
+    <td>Upload any pic (optional) :</td>
+    <td><input type="file"   name="image"></td>
+</tr>
+ <tr>
+    <td>
+        <input type="submit" value="ADD QUESTION" id="submit" name="submit">
+    </td>
+    
+    </tr>
+</table>
+
+</form>
+<p id="renp">czczsdzs</p>
+<button onclick='Render()'>Render</button>
+			
+
+
+<script>
+	function Render()
+	{
+        console.log("were inside")
+        
+  
+    document.getElementById("renp").innerHTML=document.getElementById("qt").value
+    
+	
+	
+	}
+</script>
+</body>

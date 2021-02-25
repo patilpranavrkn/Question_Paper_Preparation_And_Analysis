@@ -1,0 +1,22 @@
+\BLOCK{ for i in range(0,mainQuest)}
+\begin{flushleft}
+	\bf \VAR{i+1} \hspace{2cm} Attempt \VAR{Comp[i]} out of \VAR{subq[i]}\\  
+	\hline
+\end{flushleft}	
+\BLOCK{ for y in range(0,subq[i])}
+
+\begin{table}[h!]
+	\begin{center}
+		\begin{tabular}{l|c|l|l|l}
+	\VAR{Qnos[i][y]}&
+	\VAR{QT[i][y]} &  \VAR{SelT[i][y]} & \VAR{CoT[i][y]} & \VAR{Blt[i][y]}\\
+	\hline
+	
+
+\BLOCK{ endfor }
+						\end{tabular}
+\end{center}
+\end{table}
+
+
+\BLOCK{ endfor }

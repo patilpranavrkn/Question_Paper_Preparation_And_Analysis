@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+  <script type="text/javascript"> window.CSRF_TOKEN = "{{ csrf_token }}"; </script> 
+<style type="text/css">
+  .container {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+</style >
+
+</head>
+<nav class="navbar navbar-inverse bg-dark navbar-dark">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#" >QUESTION PAPER PREPARATION AND ANALYSIS</a>
+    </div>
+   
+
+    <ul class="nav navbar-nav navbar-right">
+
+      <li><a href="#">Logged in as :{{Eusername}}</a></li>
+      <li><a href="\Logout" ><span class="glyphicon glyphicon-log-in"></span> LOGOUT </a></li>
+    </ul>
+  </div>
+</nav>
+
+<body>
+  <div class="container" >
+    <button type="button" class="btn btn-primary btn-lg" onclick="openfunc1()">ADD THEORY QUESTION</button>
+    <p></p>
+
+</div>
+<div class="container">
+    <button type="button" class="btn btn-primary btn-lg" onclick="openfunc2()">ADD MCQ QUESTION</button>
+    <p></p>
+    <p></p>
+
+</div>
+
+
+</div>
+
+<script>
+  function openfunc1()
+  {
+   console.log("Inside func1")
+   window.location.href="ChooseQtype"
+     
+  }
+  function openfunc2()
+  {
+    console.log("Inside func2")
+    window.location.href="CreatePaper"
+     
+  }
+
+ 
+
+
+</script>
+</body>
+
+</html>

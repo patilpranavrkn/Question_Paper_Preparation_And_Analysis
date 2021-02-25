@@ -1,0 +1,375 @@
+{% load static %}
+<!DOCTYPE html>
+
+
+<html>
+    <head>
+        
+            <script 
+            src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js"> 
+            
+            </script> 
+            <script src=" {% static 'vendor/jquery/jquery-3.2.1.min.js' %}"></script>
+            <style type="text/css">
+                
+            </style>
+            
+
+    </head>
+    
+    <body>
+        <h2>Course Name {{course_name}}</h2>
+        <h2>Examination {{exam_name}}</h2>
+        <h2>Total Examination Marks {{Exam_marks}}</h2>
+        <h2>Total Questions :{{total_quest}}</h2>
+        <h2 id="cqn">Choose for : </h2>
+        <div id="DIV1">
+        <h2 style="background-color:DodgerBlue;"> Select Any of  the below theory questions to add it to the question PAPER.</h2>
+         
+        <table border="1" class="gridtable" id="tableMain">
+		<thead>
+            <tr><th>Question ID</th><th>Question Text  </th><th>CO</th><th>UNIT Num</th><th>
+                BLoom Level</th> <th>MAX MARKS</th><th>MIN MARKS </th>
+              <th>OPTION 1</th><th>OPTION 2</th><th>OPTION 3</th><th>OPTION 4</th>
+             </tr>
+			 </th>
+			 <tbody>
+             {% for item in mcq_ques %}
+             <tr>
+                 <td>
+                     {{item.id}}
+                 </td>
+                 
+            <td>
+                {{item.Qtext}}
+            </td>
+            <td>
+                {{item.Co}}
+            </td>
+            <td>
+                {{item.unit_num}}
+            </td>
+            <td>
+                {{item.BloomL}}
+            </td>
+            <td>
+                {{item.max_marks}}
+            </td>
+            <td>
+                {{item.min_marks}}
+            </td>
+           
+            <td>
+                {{item.choice_1}}
+            </td>
+            <td>
+                {{item.choice_2}}
+            </td>
+            <td>
+                {{item.choice_3}}
+            </td>
+            <td>
+                {{item.choice_4}}
+            </td>
+
+
+            
+             </tr>
+             {% endfor %}
+			 </tbody>
+            
+
+
+
+        </table>
+        <div>
+
+            <body>
+                <div id="DIV2">
+                <h2 style="background-color:DodgerBlue;"> Select Any of  the below MCQ questions to add it to the question PAPER.</h2>
+                 
+                <table border="1" class="gridtable" id="tableMain2">
+                <thead>
+                    <tr><th>&nbsp;</th><th>Question ID</th><th>Question Text  </th><th>CO</th><th>UNIT Num</th><th>
+                        BLoom Level</th> <th>MAX MARKS</th><th>MIN MARKS </th>
+                      
+                     </tr>
+                     </th>
+                     <tbody>
+                     {% for item in thr_ques %}
+                     <tr>
+                        <td><input type="checkbox"/></td>
+                         <td>
+                             {{item.id}}
+                         </td>
+                         
+                    <td>
+                        {{item.Qtext}}
+                    </td>
+                    <td>
+                        {{item.Co}}
+                    </td>
+                    <td>
+                        {{item.unit_num}}
+                    </td>
+                    <td>
+                        {{item.BloomL}}
+                    </td>
+                    <td>
+                        {{item.max_marks}}
+                    </td>
+                    <td>
+                        {{item.min_marks}}
+                    </td>
+                    <td>
+                        <input type="checkbox">
+                    </td>
+                    
+                     </tr>
+                     {% endfor %}
+                     </tbody>
+                </table>
+                <div> 
+
+
+                    
+                    <h2 style="background-color: rgb(255, 255, 128);"> Selected Questions MCQ</h2>
+                    <table border="1" class="gridtable" id="secondTablemcq">
+                            <thead>
+                                    <tr><th>Question ID</th><th>Question Text  </th><th>CO</th><th>UNIT Num</th><th>
+                                        BLoom Level</th> <th>SELECTED MARKS </th>
+                                        <th>QTYPE</th><th>OPTION 1</th><th>OPTION 2</th><th>OPTION 3</th><th>OPTION 4</th>
+                                     </tr>
+                                     </th>
+                            </thead>  
+                            <tbody>
+            
+                            </tbody>       
+            
+                    </table>
+
+                    <h2 style="background-color: rgb(255, 255, 128);"> Selected Questions THEORY</h2>
+                    <table border="1" class="gridtable" id="secondTablethr">
+                            <thead>
+                                    <tr><th>Question ID</th><th>Question Text  </th><th>CO</th><th>UNIT Num</th><th>
+                                        BLoom Level</th> <th>SELECTED MARKS </th>
+                                        
+                                     </tr>
+                                     </th>
+                            </thead>  
+                            <tbody>
+            
+                            </tbody>       
+            
+                    </table>  
+</div>
+</div>
+
+
+<button onclick="Createpaper()">GENERATE QP</button>
+<script type="text/javascript"> window.CSRF_TOKEN = "{{ csrf_token }}"; </script> 
+<script>
+
+    var Quindex=0;
+    var QnAL={{Qnums|safe}};
+    console.log(QnAL)
+    var hd=document.getElementById("cqn")
+    hd.innerHTML="Choose for :"+QnAL[Quindex]
+    totalQuest=QnAL.length
+
+
+    var QtextM=[],QtextT=[],idM=[],idT=[],COT=[],COM=[],BLT=[],BLM=[],UnumT=[],UnumM=[],SelT=[],SelM=[],chch1=[],chch2=[],chch3=[],chch4=[]
+    var selectQ=[],IDT=[],IDM=[]
+        $('#tableMain tbody').on('click', 'tr', function() {
+            //get row contents into an array
+            var tableData = $(this).children("td").map(function() {
+                return $(this).text();
+            }).get();
+            //var td=tableData[0] +  '*' +  tableData[1] + '*' + tableData[2] + '*' +  tableData[3] + '*' + tableData[4];
+           //  alert(td);
+           if(totalQuest==(Quindex))
+           {
+               alert("YOU HAVE EXCEEDED THE LIMIT ")
+           }
+           var id=tableData[0];
+           var QText=tableData[1];
+           var CO=tableData[2];
+           var Unit_num=tableData[3];
+           var BloomL=tableData[4];
+           var Max_marks=tableData[5];
+           var Min_marks=tableData[6];
+           var fmarks= SetProperMarks( Min_marks,Max_marks )
+           
+          
+        
+           var choice_1=tableData[7];
+           var choice_2=tableData[8];
+           var choice_3=tableData[9];
+           var choice_4=tableData[10];
+           console.log("Values retrived");
+    
+           var finans="<tr><td>"+id+"</td><td>"+QText+"</td><td>"+CO+"</td><td>"+Unit_num+"</td><td>"+BloomL+"</td><td>"+fmarks+"</td><td>"+choice_1+"</td><td>"+choice_2+"</td><td>"+choice_3+"</td><td>"+choice_4+"</td></tr>";
+           $('#secondTablemcq > tbody').append(finans);
+           Quindex++;
+           hd.innerHTML="Choose for :"+QnAL[Quindex]
+
+
+           
+    
+           console.log("Query Fired");
+    
+        });
+    
+        $('#secondTablemcq tbody').on('click', 'tr', function() {
+            //get row contents into an array
+            $(this).closest('tr').remove();
+            Quindex--;
+            hd.innerHTML="Choose for :"+QnAL[Quindex]
+            });
+    
+    
+            $('#tableMain2 tbody').on('click', 'tr', function() {
+                //get row contents into an array
+                var tableData = $(this).children("td").map(function() {
+                    return $(this).text();
+                }).get();
+                //var td=tableData[0] +  '*' +  tableData[1] + '*' + tableData[2] + '*' +  tableData[3] + '*' + tableData[4];
+               //  alert(td);
+               if(totalQuest==(Quindex))
+               {
+                   alert("YOU HAVE SELECTED ALL THE QUESTIONS ")
+               }
+          var id=tableData[0];
+           var QText=tableData[1];
+           var CO=tableData[2];
+           var Unit_num=tableData[3];
+           var BloomL=tableData[4];
+           var Max_marks=tableData[5];
+           var Min_marks=tableData[6];
+           var fmarks= SetProperMarks( Min_marks,Max_marks )
+           
+  
+              
+               var finans="<tr><td>"+id+"</td><td>"+QText+"</td><td>"+CO+"</td><td>"+Unit_num+"</td><td>"+BloomL+"</td><td>"+fmarks+"</td>";
+               $('#secondTablethr> tbody').append(finans);
+               Quindex++
+               hd.innerHTML="Choose for :"+QnAL[Quindex]
+
+        
+               console.log("Query Fired");
+        
+            }); 
+            
+            $('#secondTablethr tbody').on('click', 'tr', function() {
+                //get row contents into an array
+                $(this).closest('tr').remove();
+                Quindex--;
+                hd.innerHTML="Choose for :"+QnAL[Quindex]
+                });
+    
+    function CreateReport()
+    {
+        console.log("Inside Create Report")
+        var table1=document.getElementById("secondTablemcq");
+        var table2=document.getElementById("secondTablethr");
+        console.log(table1.rows.length,table2.rows.length)
+        for(var i=1;i<table1.rows.length;i++)
+        {
+         idM[i-1]=table1.rows[i].cells[0].innerHTML;
+         alert(idM[i-1])
+           QtextM[i-1]=table1.rows[i].cells[1].innerHTML;
+           alert( QtextM[i-1])
+           COM[i-1]=table1.rows[i].cells[2].innerHTML;
+           UnumM[i-1]=table1.rows[i].cells[3].innerHTML;
+          
+           BLM[i-1]=table1.rows[i].cells[4].innerHTML;
+          
+           SelM[i-1]=table1.rows[i].cells[5].innerHTML
+            chch1[i-1]=table1.rows[i].cells[6].innerHTML;
+            chch2[i-1]=table1.rows[i].cells[7].innerHTML;
+            chch2[i-1]=table1.rows[i].cells[8].innerHTML;
+            chch3[i-1]=table1.rows[i].cells[9].innerHTML;
+            chch4[i-1]=table1.rows[i].cells[10].innerHTML;
+        }
+
+        for(var i=1;i<=table2.rows.length;i++)
+        {
+            idT[i-1]=table1.rows[i].cells[0].innerHTML;
+           QtextT[i-1]=table1.rows[i].cells[1].innerHTML;
+           COMT[i-1]=table1.rows[i].cells[2].innerHTML;
+           UnumT[i-1]=table1.rows[i].cells[3].innerHTML;
+          
+           BLT[i-1]=table1.rows[i].cells[4].innerHTML;
+           SelM[i-1]=table1.rows[i].cells[5].innerHTML
+
+           alert(idM,idT)
+          
+        }
+    }
+    function Createpaper()
+    {
+        QtextM=[],QtextT=[],idM=[],idT=[],COT=[],COM=[],BLT=[],BLM=[],UnumT=[],UnumM=[],SelT=[],SelM=[],chch1=[],chch2=[],chch3=[],chch4=[]
+        var table1=document.getElementById("secondTablemcq");
+        var table2=document.getElementById("secondTablethr");
+        console.log(table1,table2)
+        console.log(table1.rows.length,table2.rows.length)
+        for(var i=1;i<table1.rows.length;i++)
+        {
+         idM[i-1]=(table1.rows[i].cells[0].innerHTML).trim();
+           QtextM[i-1]=(table1.rows[i].cells[1].innerHTML).trim();
+           COM[i-1]=(table1.rows[i].cells[2].innerHTML).trim();
+           UnumM[i-1]=(table1.rows[i].cells[3].innerHTML).trim();
+          
+           BLM[i-1]=(table1.rows[i].cells[4].innerHTML).trim();
+          
+           SelM[i-1]=(table1.rows[i].cells[5].innerHTML).trim();
+            chch1[i-1]=(table1.rows[i].cells[6].innerHTML).trim();
+            chch2[i-1]=(table1.rows[i].cells[7].innerHTML).trim();
+            chch3[i-1]=(table1.rows[i].cells[8].innerHTML).trim();
+            chch4[i-1]=(table1.rows[i].cells[9].innerHTML).trim();
+        }
+
+        for(var i=1;i<table2.rows.length;i++)
+        {
+            idT[i-1]=(table2.rows[i].cells[0].innerHTML).trim();
+           QtextT[i-1]=(table2.rows[i].cells[1].innerHTML).trim();
+           COT[i-1]=(table2.rows[i].cells[2].innerHTML).trim();
+           UnumT[i-1]=(table2.rows[i].cells[3].innerHTML).trim();
+          
+           BLT[i-1]=(table2.rows[i].cells[4].innerHTML).trim();
+           SelT[i-1]=(table2.rows[i].cells[5].innerHTML).trim();
+
+           
+
+          
+        }
+        console.log(IDT)
+        console.log(QtextT)
+       
+    
+        $.ajax({
+            type: 'POST',
+          
+            url: '/gen_qp',
+            data: {csrfmiddlewaretoken: window.CSRF_TOKEN,'QtextM[]':QtextM,'QtextT[]':QtextT,'idM[]':idM,'idT[]':idT,'COT[]':COT,'COM[]':COM,'BLT[]':BLT,'BLM[]':BLM,'UnumT[]':UnumT,'UnumM[]':UnumM,'SelT[]':SelT,'SelM[]':SelM,'chch1[]':chch1,'chch2[]':chch2,'chch3[]':chch3,'chch4[]':chch4,},
+        });
+
+
+
+
+    }
+
+    function SetProperMarks( min, max)
+    {
+        var ans=prompt("Set the marks of this question from "+"which is greter than or equal to "+min+" and less than or equal to "+max)
+        if(Number(ans)>=Number(min) && Number(ans)<=Number(max))
+        {
+            return ans
+        }
+        else return SetProperMarks(min,max)
+    } 
+
+</script>
+</body>
+                                      
+                                  

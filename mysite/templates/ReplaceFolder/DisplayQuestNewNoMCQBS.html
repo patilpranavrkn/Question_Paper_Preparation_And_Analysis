@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+
+    <div class="container">
+        <h2 >TABLE OF Theory Questions</h2>
+        <table class="table table-hover">
+            
+                <tr>
+                    <th>&nbsp;</th>  <th>Question ID</th><th>Question Text  </th><th>CO</th><th>UNIT Num</th><th>
+                        BLoom Level</th><th>Max Marks</th><th>Min Marks</th>
+                </tr>
+              
+              <tr>
+                {% for item in thr_ques %}
+                <tr>
+                    <td>
+                        <input type="checkbox"/>
+                    </td>
+                    <td>
+                        {{item.id}}
+                    </td>
+                    
+               <td>
+                   {{item.Qtext}}
+               </td>
+               <td>
+                   {{item.Co}}
+               </td>
+               <td>
+                   {{item.unit_num}}
+               </td>
+               <td>
+                   {{item.BloomL}}
+               </td>
+               
+                <td>
+                {{item.max_marks}}
+                </td>
+                <td>
+                    {{item.min_marks}}
+                    </td>
+        
+              </tr>
+    
+              {% endfor %}
+    
+    
+    
+    
+    
+    
+    
+        </table>
+    </div>
+    <div class="container">
+        <button type="button" class="btn btn-primary" onclick="GetTickedRows()">PROCEED FURTHER</button>
+    </div>
+
+    <div class="container">
+        <tr><td id="qtext"></td></tr>
+        <tr><td>Max Marks:</td><td id="mxms"></td></tr>
+        <tr><td>Min Marks:</td><td id="minm"></td></tr>
+        <tr><td>BLOOML:</td><td id="blooml"></td></tr>
+        <tr><td>Select marks for the above Question</td><td ><input type=number id="smarks"></td></tr>
+        <tr><td><button type="button" class="btn btn-warning" onclick="AddElementMarks()">ADD MARKS</button></td></tr>
+
+
+
+    </div>
+
+    <div class="container">
+        <button type="button" class="btn btn-info" onclick="GenerateReport()">GENERATE REPORT</button>
+
+
+    </div>
+
+    <div class="container">
+        <h3>  UNIT WISE QUESTION DISTRIBUTION</h3>
+    <canvas id="myChart" width="400" height="200" style="visibility: hidden"></canvas> 
+    </div>
+    
+    
+    <div class="container">
+        <h3>  BLOOMS LEVEL WISE DISTRIBUTION</h3>
+    <canvas id="myChart2" width="400" height="200" style="visibility: hidden" ></canvas>
+    </div>
+    <div class="container">
+        <h3>COURSE OUTCOME WISE DISTRIBUTION
+        </h3>
+        <canvas id="myChart3" width="400" height="200" style="visibility: hidden" ></canvas>
+
+    </div>
+
+    <div class="container">
+
+        <button type="button" class="btn btn-warning" onclick="GenLatex()">GENERATE LATEX </button>
+
+    </div>
+
+    
+    <script>
+        var idT=[],QtextT=[],COT=[],UnumT=[],BLT=[],maxt=[],mint=[]
+        var len1=0;
+        var SetThr=[]
+        var addTleni=0;
+    
+        function GetTickedRows()
+        {
+            var jindex=0;
+    
+        $("#THRQ input[type=checkbox]:checked").each(function () {
+    
+            var row=$(this).closest("tr")[0];  
+            idT[jindex]=(row.cells[1].innerHTML).trim();
+            QtextT[jindex]=(row.cells[2].innerHTML).trim();
+            COT[jindex]=(row.cells[3].innerHTML).trim();
+            UnumT[jindex]=(row.cells[4].innerHTML).trim();
+            BLT[jindex]=(row.cells[5].innerHTML).trim();
+            maxt[jindex]=(row.cells[6].innerHTML).trim();
+            mint[jindex]=(row.cells[7].innerHTML).trim();
+    
+            jindex++;
+            
+           
+           });
+    
+    
+           document.getElementById("qtext").innerHTML=QtextT[addTleni];
+           document.getElementById("mxms").innerHTML=maxt[addTleni];
+           document.getElementById("minm").innerHTML=mint[addTleni];
+           document.getElementById("blooml").innerHTML=BLT[addTleni];
+           len1=QtextT.length
+        
+        }
+        function AddElementMarks()
+        {
+          
+          SetThr[addTleni]=document.getElementById("smarks").value
+          if(addTleni<len1)
+          {
+              addTleni++;
+      
+              
+              document.getElementById("qtext").innerHTML=QtextT[addTleni];
+              document.getElementById("mxms").innerHTML=maxt[addTleni];
+              document.getElementById("minm").innerHTML=mint[addTleni];
+              document.getElementById("blooml").innerHTML=BLT[addTleni];
+      
+              console.log("The length of index array is ",addTleni ," len of array is ",len1)
+            
+      
+      
+      
+          }
+      
+          if(addTleni==(len1))
+          {  
+              console.log("now you can generate the paper")
+      
+          }
+      
+      
+        }
+    
+        function GenLatex()
+        {
+            $.ajax({
+    
+    
+                type: 'POST',
+              
+                url: '/gen_latex_no_mcq',
+                data: {csrfmiddlewaretoken: window.CSRF_TOKEN,'QtextT[]':QtextT,'idT[]':idT,'COT[]':COT,'BLT[]':BLT,'UnumT[]':UnumT,'SetThr[]':SetThr},
+                success : function(response){
+                    window.location='template_details'
+                }
+            });
+    
+    
+        
+        }
+
+    
+    
+    
+    </script>
+
+
+
+
+
+</body>
+</html>

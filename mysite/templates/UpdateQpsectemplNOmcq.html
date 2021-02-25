@@ -1,0 +1,300 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+  <script type="text/javascript"> window.CSRF_TOKEN = "{{ csrf_token }}"; </script> 
+<style type="text/css">
+
+	#qpna
+	{
+	 font-size:30px;
+	
+    }
+    .texta
+	{
+	font-size:20px;
+    }
+    .textab
+	{
+	font-size:22px;
+	}
+</style>
+
+</head>
+
+<body>
+  <nav class="navbar navbar-inverse bg-dark navbar-dark">
+        <div class="container-fluid">
+	 <a class="navbar-brand" href="#">
+            <img src="{% static 'kitimage.jpg'  %}" alt="" height="60" width="120">
+        </a>
+          <div class="navbar-header">
+            <a class="navbar-brand" href="#" id="qpna">QUESTION PAPER PREPARATION AND ANALYSIS</a>
+          </div>
+		 
+         
+    
+          <ul class="nav navbar-nav navbar-right">
+    
+            <li><a href="#">Logged in as :{{Eusername}}</a></li>
+            <li><a  href="#" data-toggle="modal" data-target="#logoutModal" ><span class="glyphicon glyphicon-log-in"></span> LOGOUT </a></li>
+          </ul>
+        </div>
+      </nav>
+<div class="modal" id="logoutModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+	   <h4>Logout Confirmation<i class="fa fa-lock"></i></h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+       
+      </div>
+      <div class="modal-body">
+        <p><i class="fa fa-question-circle"></i> Are you sure you want to Logout? <br /></p>
+        <div class="actionsBtns">
+            <form action="/logout" method="post">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <input type="submit" class="btn btn-default btn-primary" data-dismiss="modal" value="Logout" onclick="execLogout()" />
+	                <button class="btn btn-default" data-dismiss="modal">Cancel</button>
+            </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 
+<br>
+
+
+    <div class="container">
+        <h3 id="proceed" style= "color:rgb(3, 40, 161);"></h3><br>
+        <label for="num" class="textab" > Select Total Questions: </label>
+        <input type="number" id="num"  min="1" step="1">
+        <button type="button" class="btn btn-primary" onclick="StartTakingSubQ()">ENTER</button>
+
+    </div>
+
+    <div class="container">
+
+
+        <div class="form-group">
+            <label for="subqn" id="subq" class="texta"></label><br>
+            <input type="number" id="subqn"  min="1" step="1">
+
+        </div>
+        <div class="form-group">
+            <label for="" id="totalcomp" class="texta"></label><br>
+            <input type="number" id="tcn"  min="1" step="1">
+
+        </div>
+
+       
+        <div class="form-group">
+            <label for="totmarks" id="totmarks" class="texta"></label><br>
+            <input type="number" id="totm"  min="1" step="1">
+
+        </div>
+         
+        <div class="form-group">
+            <h5 id="warn" style="color:red;"></h5><br>
+            <h5 id="markd" style= "color:red;"></h5>
+        </div>
+        <button type="button" class="btn btn-danger" onclick="PrevD()">PREVIOUS</button>
+        <button type="button" class="btn btn-primary" onclick=" RetrData()">ADD</button><br><br>
+        <button type="button" class="btn btn-success" onclick="ProceedNP()">PROCEED FURTHER</button><br><br>
+        <button type="button" class="btn btn-warning" onclick="Reset()">RESET</button><br>
+
+
+        
+    
+
+       
+    </div>
+
+    
+    
+
+<script>
+  
+    var SubQC=[],CompC=[],totalmarks=[]
+    var arrayi=0
+    Index_count=1;
+    var totq=0;
+    var checksum=0;
+    var MAXM=Number({{maxm}});
+ 	
+    function Reset()
+    {
+
+        location.reload();
+    }
+    function StartTakingSubQ()
+    {
+        totq=Number(document.getElementById("num").value)
+
+        if(totq>0 && totq<20)
+        {
+            startIter()
+        }
+        
+        return false
+        
+    }
+
+    function startIter()
+    {
+        if(Index_count<=totq)
+            {
+                console.log("Inside start Iter");
+                console.log("Index count is ",Index_count)
+              
+                var tdsubq=document.getElementById("subq")
+                var totalcomp=document.getElementById("totalcomp")
+                var totalmarks=document.getElementById("totmarks")
+                tdsubq.innerHTML="Enter total subquestions for Question No. "+Index_count;
+                totalcomp.innerHTML="Enter total compulsory Questions for Question No."+Index_count;
+                totalmarks.innerHTML="Enter total marks for the Question No. "+Index_count;
+
+                return;
+            }
+
+
+    }
+
+    function PrevD()
+    {
+        if(arrayi>0)
+        {
+          console.log("inside")
+            arrayi--;
+            Index_count--;
+            console.log(SubQC,CompC,totalmarks)
+            document.getElementById("subqn").value=SubQC[arrayi]
+            document.getElementById("tcn").value=CompC[arrayi]
+            document.getElementById("totm").value=totalmarks[arrayi]
+            document.getElementById("subq").innerHTML="Enter total subquestions for Question No. "+Index_count;
+            document.getElementById("totalcomp").innerHTML="Enter total compulsory Questions for Question No."+Index_count;
+            document.getElementById("totmarks").innerHTML="Enter total marks for the Question No. "+Index_count;
+
+
+
+
+        }
+    }
+
+    function RetrData()
+
+    {
+        console.log("Inside retr")
+       console.log(SubQC,CompC,totalmarks)
+       console.log("asdaddssdasda")
+        console.log(Index_count,totq)
+        if(Index_count<=totq)
+        {
+        document.getElementById("proceed").innerHTML="";
+        subqs=document.getElementById("subqn")
+        tcomp=document.getElementById("tcn")
+        totm=document.getElementById("totm")
+        console.log("Inside here",subqs,tcomp,totm)
+
+        if(Number(subqs.value)>0 && Number(subqs.value)<=20 && Number(tcomp.value)>0 && Number(tcomp.value)<=20 && Number(totm.value)>0 && Number(totm.value)<=20)
+            {
+                if(Number(subqs.value)>=Number(tcomp.value))
+                { document.getElementById("markd").innerHTML=""
+        SubQC[arrayi]=subqs.value
+        CompC[arrayi]=tcomp.value
+
+        totalmarks[arrayi]=totm.value
+        checksum+=Number(totm.value)
+        console.log(totm.value)
+        console.log("The values of the array are ",SubQC,CompC,totalmarks)
+        arrayi++
+        console.log(subqs.value);
+        console.log(tcomp.value);
+        if(checksum>MAXM)
+        {
+            document.getElementById("warn").innerHTML="WARNING: The Selected question Marks are greater than Maximum marks"
+
+        }
+        else
+        {
+            document.getElementById("warn").innerHTML=""
+        }
+      
+        Index_count++;
+        if(Index_count==(totq+1) && checksum<MAXM)
+        {
+            document.getElementById("warn").innerHTML="WARNING: The Selected question Marks are lesser than Maximum marks"
+        }
+
+        startIter()
+
+        return;
+                }
+            
+                else
+                {
+                   // window.alert("Make sure that Compulsory questions are less than total subquestions")
+                    console.log("Inside markd")
+                   document.getElementById("markd").innerHTML="Make sure that Compulsory questions are less than total subquestions"
+                }
+
+            }
+        }
+
+            
+
+        
+        else
+        {
+            //window.alert("You have selected all questions Now you can proceed further")
+            document.getElementById("proceed").innerHTML="You have selected all questions Now you can proceed further";
+        }
+
+    }
+
+    function ProceedNP()
+        {
+           
+           
+         
+
+            console.log(SubQC,CompC,totalmarks)
+            $.ajax({
+
+               
+                type: 'POST',
+              
+                url: '/gen_templ_no_mcq',
+                data: {csrfmiddlewaretoken: window.CSRF_TOKEN,'SubQC[]':SubQC,'CompC[]':CompC,'totalm[]':totalmarks,},
+                success : function(response){
+                    window.location='template_details_noMCQ'
+                }
+            });
+
+
+
+        }
+		
+	
+
+</script>
+
+<script>
+    function execLogout()
+	{
+        
+		window.location.href="Logout";
+	
+	}	
+
+</script>
+</body>
+</html>

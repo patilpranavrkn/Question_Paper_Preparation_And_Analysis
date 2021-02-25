@@ -1,0 +1,67 @@
+<html>
+    <head>
+        <style>
+            input[type=text] {
+                width: 50%;
+                padding: 12px 20px;
+                margin: 8px 0;
+                box-sizing: border-box;
+                border: 3px solid #ccc;
+                -webkit-transition: 0.5s;
+                transition: 0.5s;
+                outline: none;
+              }
+              
+              input[type=text]:focus {
+                border: 3px solid #555;
+              }
+
+        </style>
+    </head>
+    <body>
+        <h2>Enter details of the Course</h2>
+        <form action='InsertCourse'>
+            <label>Enter Course CODE :</label><br>
+            <input type=text name="tid" id="tid"><br>
+            <label>Enter Course Type :</label><br>
+            <input type="radio" value="PG" name="G">PG<br>
+            <input type="radio" value="UG" name="G">UG<br>
+            <label>Enter Course Name :</label><br>
+            <input type=text name="tname" id="tname"><br>
+            <label>Enter Course Examination :</label><br>
+           
+           <select name="CourseE">
+            <option value="sem 1  part 1 ">sem 1 part 1 </option>
+            <option value="sem 2  part 2 ">sem 2 part 2 </option>
+            <option value="sem 3  part 1 ">sem 3 part 1 </option>
+            <option value="sem 4  part 2 ">sem 4 part 2 </option>
+            <option value="sem 5  part 1 ">sem 5 part 1 </option>
+            <option value="sem 6  part 2 ">sem 6 part 2 </option>
+            <option value="sem 7  part 1 ">sem 7 part 1 </option>
+            <option value="sem 8  part 2 ">sem 8 part 1 </option>
+
+           </select>
+           <br>
+           <label>Enter Total Exam Marks :</label><br>
+            <select name="marks">
+                <option value="25">25</option>
+                <option value="50">50</option>
+                <option value="75">75</option>
+                <option value="100">100</option>
+                <option value="125">125</option>
+                <option value="150">150</option>
+                <option value="175">175</option>
+               
+            </select>
+            <br>
+            
+
+
+            <tr>
+                <input type="submit">
+            </tr>
+
+        </form>
+
+    </body>
+    </html> 

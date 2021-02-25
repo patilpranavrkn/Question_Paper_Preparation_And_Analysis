@@ -1,0 +1,308 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <script type="text/javascript" src="http://latex.codecogs.com/editor3.js"></script>
+    <style>
+	#qpna
+	{
+	 font-size:30px;
+	
+  }
+  .sizel
+  {
+    font-size:20px;
+  }
+    </style>
+<title>QPPA</title>
+<meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+   <link href="{% static 'BOOTSTRAP/css/bootstrap.min.css' %}" rel="stylesheet">
+  <script src="{% static 'BOOTSTRAP/js/bootstrap.min.js' %}"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
+</head>
+    <nav class="navbar navbar-inverse bg-dark navbar-dark">
+        <div class="container-fluid">
+	 <a class="navbar-brand" href="#">
+          <img src="{% static 'kitimage.jpg'  %}" alt="" height="60" width="120">
+        </a>
+          <div class="navbar-header">
+            <a class="navbar-brand" href="#" id="qpna">QUESTION PAPER PREPARATION AND ANALYSIS</a>
+          </div>
+		 
+         
+    
+          <ul class="nav navbar-nav navbar-right">
+    
+            <li><a href="#">Logged in as :{{Eusername}}</a></li>
+            <li><a  href="#" data-toggle="modal" data-target="#logoutModal" ><span class="glyphicon glyphicon-log-in"></span> LOGOUT </a></li>
+          </ul>
+        </div>
+      </nav>
+<div class="modal" id="logoutModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+	   <h4>Log Out <i class="fa fa-lock"></i></h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+       
+      </div>
+      <div class="modal-body">
+        <p><i class="fa fa-question-circle"></i> Are you sure you want to Logout? <br /></p>
+        <div class="actionsBtns">
+            <form action="/logout" method="post">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <input type="submit" class="btn btn-default btn-primary" data-dismiss="modal" value="Logout" onclick="execLogout()" />
+	                <button class="btn btn-default" data-dismiss="modal">Cancel</button>
+            </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 
+    <div class="container">
+        <h1 align="center" style="color:red"> Add Details of the Questions</h1>
+            <form action="AddmcqQues" method="POST"  enctype="multipart/form-data" onsubmit="return validateForm()">
+            {% csrf_token %}
+            <div class="form-group">
+
+                <label for="qt" class="sizel">INSERT QUESTION TEXT:</label>
+                <input type="text" class="form-control"  required size="200" name="qt" id="qt">
+            </div>
+          
+            
+			<div class="form-group">
+			<button onclick="openit()" type="button">ADD SYMBOLS AND EQUATIONS </button>
+        
+               
+
+            </div>
+
+            <div class="form-group">
+                <a href="javascript:OpenLatexEditor('testbox','latex','')" class="btn btn-info" role="button">LAUNCH EQUATIONS EDITOR</a>
+
+            </div>
+            <div class="form-group">
+                <label for="comment">PICK YOUR EQUATION AND ADD IT TO THE QUESTION TEXT:</label>
+                <textarea class="form-control" rows="5" id="testbox"></textarea>
+              </div>
+              <div class="form-group">
+                <button onclick="Addequation()" type="button" class="btn-warning">ADD THESE EQUATION </button>
+              </div>
+              <div class="form-group">
+                <label for="" class="sizel">OPTION 1 :</label>
+                <input type="text" class="form-control"  name="opt1" required>
+              </div>
+              <div class="form-group">
+                <label for="" class="sizel">OPTION 2 :</label>
+                <input type="text" class="form-control"  name="opt2" required>
+              </div>
+              <div class="form-group">
+                <label for="" class="sizel">OPTION 3 :</label>
+                <input type="text" class="form-control"  name="opt3" required>
+              </div>
+              <div class="form-group">
+                <label for="" class="sizel">OPTION 4 :</label>
+                <input type="text" class="form-control"  name="opt4" required>
+              </div>
+              <div class="form-group">
+                <label for="sel1" class="sizel">Select UNIT NO:</label>
+                <select class="form-control" id="sel1"  name="un"> 
+                    {% for i in Unitd %}
+                  <option value="{{i.Unit_num}}">{{i.Unit_num}} - {{i.Unit_name}}</option>
+                  {% endfor %}
+                 
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="sel1" class="sizel">CO :</label>
+                <select class="form-control" id="sel1"  name="CO"> 
+                    {% for i in Co %}
+                    <option value="{{i.Outcome_no}}">{{i.Outcome_no}} - {{i.Outcome_Text}}</option>
+                    {% endfor %}
+                 
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="sel2" class="sizel">BLOOMS LEVEL :</label>
+                <select class="form-control" id="sel2"  name="BL"> 
+                    
+                    <option  value="1"> 1 - REMEMBERING</option> 
+                    <option  value="2"> 2 - UNDERSTANDING</option> 
+                    <option  value="3"> 3 - APPLYING</option> 
+                    <option  value="4"> 4 - ANALYZING</option> 
+                    <option  value="5"> 5 - EVALUATING</option> 
+                    <option  value="6"> 6 - CREATING</option> 
+                    
+                 
+                </select>
+              </div>
+              <div class="form-group">
+
+                <label for="MIM" class="sizel">MINIMUM MARKS:</label>
+                <select class="form-control" id="MIM"  name="MIM"> 
+                    
+                    <option>1</option> 
+                    <option>2</option> 
+                    <option>3</option> 
+                    <option>4</option> 
+                    <option>5</option> 
+                    <option>6</option>
+					          <option>7</option>
+						        <option>8</option> 
+                    
+                 
+                </select>
+            
+            </div> 
+            <div class="form-group">
+
+                <label for="MXM" class="sizel">MAXIMUM MARKS:</label>
+                <select class="form-control" id="MXM"  name="MXM"> 
+                    
+                    <option>1</option> 
+                    <option>2</option> 
+                    <option>3</option> 
+                    <option>4</option> 
+                    <option>5</option> 
+                    <option>6</option>
+					          <option>7</option> 
+					           <option>8</option> 
+                    
+                 
+                </select>
+            
+            </div> 
+
+            <div class="form-group">
+
+                <label for="image" class="sizel">Image (optional)</label>
+
+                <input type="file"  id="image" name="image" accept=".png" onchange="loadFile(event)">
+
+                <img id="output" height="200" width="360"/>
+            </div>
+
+            <div class="form-group">
+              <h5 id="warnimage" style="color:red;"></h5>
+
+            </div>
+
+            <div class="form-group">
+
+                <label for="rem" class="sizel">REMARKS :</label>
+
+                <input type="text"  id="rem" name="rem"  size="60">
+            </div>
+            <div class="form-group">
+              <h5 id="warn" style="color:red;"></h5>
+
+            </div>
+            <div class="form-action">
+            <input type="submit" class="btn-success" value='ADD QUESTION'>
+            </div>
+
+    </div>
+</form>
+
+</div>
+<script>
+
+  var loadFile = function(event) {
+    var output = document.getElementById('output');
+    output.src = URL.createObjectURL(event.target.files[0]);
+    output.onload = function() {
+      URL.revokeObjectURL(output.src)
+}
+}
+  function checkext()
+  {
+    
+    document.getElementById("warnimage").innerHTML=""
+  
+      var fileInput =  
+                  document.getElementById('image'); 
+                
+              var filePath = fileInput.value; 
+        if(filePath.length>0)
+        {
+            
+              // Allowing file type 
+              var allowedExtensions =  /(\.png)$/i; 
+        
+          
+              if (!allowedExtensions.exec(filePath)) { 
+                document.getElementById("warnimage").innerHTML="MAKE SURE THE IMAGE YOU HAVE SELECTED IS OF PNG FORMAT ONLY"
+                return false;
+          }
+          document.getElementById("warnimage").innerHTML=""
+          return true;
+              }
+              document.getElementById("warnimage").innerHTML=""
+              return true;
+        
+  }
+function validateForm()
+{
+
+
+var min=Number(document.getElementById("MIM").value);
+var max=Number(document.getElementById("MXM").value);
+
+   
+
+	if(min>max)
+	{
+		console.log("minimum marks is greater than maximim");
+    //alert("minimum is greater than maximim");
+    document.getElementById("warn").innerHTML="Minimum marks is greater than Maximum marks";
+    return false
+  }
+  
+  else
+  {
+    return true && checkext();
+  }
+
+
+}
+
+	function openit()
+	{
+	window.open(
+  'https://www.codecogs.com/latex/eqneditor.php?lang=en-en',
+  '_blank' // <- This is what makes it open in a new window.
+);
+	}
+		function execLogout()
+	{
+		window.location.href="Logout";
+	
+  }
+  
+  function AddNewline()
+{
+  var text=document.getElementById("qt").value;
+  document.getElementById("qt").value=document.getElementById("qt").value ;
+}
+	</script>
+</body>
+	<script>
+		function execLogout()
+	{
+		window.location.href="Logout";
+	
+  }
+  function Addequation()
+{
+  var text=document.getElementById("testbox").value;
+  console.log(text)
+  document.getElementById("qt").value=document.getElementById("qt").value+text;
+}
+	</script>
+</html>

@@ -1,0 +1,173 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+ 
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+  <script type="text/javascript"> window.CSRF_TOKEN = "{{ csrf_token }}"; </script>
+  
+  <style type="text/css">
+
+    .container {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+	}
+	#qpna
+	{
+	 font-size:30px;
+	
+	}
+
+
+	
+	
+</style>
+</head>
+<body>
+
+<nav class="navbar navbar-inverse bg-dark navbar-dark">
+        <div class="container-fluid">
+	 <a class="navbar-brand" href="#">
+          <img src="{% static 'kitimage.jpg'  %}" alt="" height="60" width="120">
+        </a>
+          <div class="navbar-header">
+            <a class="navbar-brand" href="#" id="qpna">QUESTION PAPER PREPARATION AND ANALYSIS</a>
+          </div>
+		 
+         
+    
+          <ul class="nav navbar-nav navbar-right">
+    
+            <li><a href="#">Logged in as :{{Eusername}}</a></li>
+            <li><a  href="#" data-toggle="modal" data-target="#logoutModal" ><span class="glyphicon glyphicon-log-in"></span> LOGOUT </a></li>
+          </ul>
+        </div>
+      </nav>
+<div class="modal" id="logoutModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+	   <h4>Logout Confirmation<i class="fa fa-lock"></i></h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+       
+      </div>
+      <div class="modal-body">
+        <p><i class="fa fa-question-circle"></i> Are you sure you want to Logout? <br /></p>
+        <div class="actionsBtns">
+            <form action="/logout" method="post">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <input type="submit" class="btn btn-default btn-primary" data-dismiss="modal" value="Logout" onclick="execLogout()" />
+	                <button class="btn btn-default" data-dismiss="modal">Cancel</button>
+            </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal" id="DeleteModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+       <h4>Delete Confirmation<i class="fa fa-lock"></i></h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+       
+      </div>
+      <div class="modal-body">
+        <p><i class="fa fa-question-circle"></i> Are you sure you want to Delete these UNIT DETAILS ?<br /></p>
+        <div class="actionsBtns">
+            <form action="/logout" method="post">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <input type="submit" class="btn btn-default btn-danger" data-dismiss="modal" value="DELETE" onclick="GetTickedRows()" />
+                    <button class="btn btn-default" data-dismiss="modal">Cancel</button>
+            </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>  
+  <div class="container">
+   <h2 >COURSE NAME {{Course_name}}</h2>
+        <h2 >CURRENT COURSE UNIT DETAILS</h2>
+	 </div>	
+		
+		
+    <div class="container">
+           
+        <table class="table table-striped" id="table1">
+          <thead>
+            <tr> <th>&nbsp;</th>
+                <th>ID</th>
+              <th>Unit_num</th>
+              <th>Unit_name</th>
+              <th>Unit_Text</th>
+              <th>Total Marks</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for i in Unit_det  %}
+            <tr>
+            <tr> <td>
+                <input type="checkbox"/>
+            </td>
+                <td>{{i.id}}</td>
+                <td>{{i.Unit_num}}</td>
+                <td>{{i.Unit_name}}</td>
+                <td>{{i.Unit_Details}}</td>
+                <td>{{i.Unit_marks}}</td>
+
+            </tr>
+            {% endfor %}
+
+          </tbody>
+
+        </table>
+    </div>
+    <div class="container">
+        <button type="button" class="btn btn-danger" data-toggle="modal"  data-target="#DeleteModal">DELETE UNIT DETAILS</button>
+
+    </div>
+    <br>
+    <script>
+
+        var idM=[]
+        function GetTickedRows()
+        {
+            var index=0;
+            var jindex=0;
+            $("#table1 input[type=checkbox]:checked").each(function () {
+        
+                var row=$(this).closest("tr")[0];  
+                idM[index]=(row.cells[1].innerHTML).trim();
+                index++;
+            });
+
+            $.ajax({
+                type: 'POST',
+              
+                url: '/del_unit_det',
+                data: {csrfmiddlewaretoken: window.CSRF_TOKEN,'mcqid[]':idM},
+                success : function(response){
+                    window.location='Done_Deleting_ud'
+                }
+                });
+        
+        }     
+  
+		function execLogout()
+	{
+		window.location.href="Logout";
+	
+	}
+	
+    </script>
+  
+    </body>
+    </html>

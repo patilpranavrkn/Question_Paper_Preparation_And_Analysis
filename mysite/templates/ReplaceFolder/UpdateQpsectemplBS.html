@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+  <script type="text/javascript"> window.CSRF_TOKEN = "{{ csrf_token }}"; </script> 
+<style type="text/css">
+</style>
+
+</head>
+
+<body>
+
+    <div class="container">
+
+        <label for="num">Select Total Questions: </label>
+        <input type="number" id="num">
+        <button type="button" class="btn btn-primary" onclick="StartTakingSubQ()">ENTER</button>
+
+    </div>
+
+    <div class="container">
+
+
+        <div class="form-group">
+            <label for="subqn" id="subq"></label><br>
+            <input type="number" id="subqn">
+
+        </div>
+        <div class="form-group">
+            <label for="" id="totalcomp"></label><br>
+            <input type="number" id="tcn">
+
+        </div>
+
+       
+        <div class="form-group">
+            <label for="totmarks" id="totmarks"></label><br>
+            <input type="number" id="totm">
+
+        </div>
+
+        <button type="button" class="btn btn-primary" onclick="RetrData()">ADD</button>
+        <button type="button" class="btn btn-success" onclick="ProceedNP()">PROCEED FURTHER</button>
+        
+    </div>
+    
+    
+
+<script>
+    var SubQC=[],CompC=[],totalmarks=[]
+    var arrayi=0
+    Index_count=0;
+    var totq=0;
+    function StartTakingSubQ()
+    {
+        totq=Number(document.getElementById("num").value)
+        console.log(totq)
+       
+        startIter()
+    }
+
+    function startIter()
+    {
+        if(Index_count<=totq)
+            {
+                console.log("Index count is ",Index_count)
+                Index_count++;
+                var tdsubq=document.getElementById("subq")
+                var totalcomp=document.getElementById("totalcomp")
+                var totalmarks=document.getElementById("totmarks")
+                tdsubq.innerHTML="Enter total subquestions for Question No. "+Index_count;
+                totalcomp.innerHTML="Enter total compulsory Questions for Question No."+Index_count;
+                totalmarks.innerHTML="Enter total marks for the Question No. "+Index_count;
+
+                return;
+            }
+
+
+    }
+
+    function RetrData()
+    {
+        subqs=document.getElementById("subqn")
+        tcomp=document.getElementById("tcn")
+        totm=document.getElementById("totm")
+
+        if(Number(subqs.value)>0 && Number(subqs.value)<=20 && Number(tcomp.value)>0 && Number(tcomp.value)<=20 && Number(totm.value)>0 && Number(totm.value)<=20)
+            {
+                if(Number(subqs.value)>Number(tcomp.value))
+                {
+                    
+        SubQC[arrayi]=subqs.value
+        CompC[arrayi]=tcomp.value
+        totalmarks[arrayi]=totm.value
+        console.log(totm.value)
+        console.log("The values of the array are ",SubQC,CompC,totalmarks)
+        arrayi++
+        console.log(subqs.value);
+        console.log(tcomp.value);
+
+        startIter()
+
+        return;
+                }
+
+            }
+
+        /*
+
+        SubQC[arrayi]=subqs.value
+        CompC[arrayi]=tcomp.value
+        totalmarks[arrayi]=totm.value
+        console.log(totm.value)
+        console.log("The values of the array are ",SubQC,CompC,totalmarks)
+        arrayi++
+        console.log(subqs.value);
+        console.log(tcomp.value);
+
+        startIter()
+
+        return;
+        */
+
+    }
+
+    function ProceedNP()
+        {
+            alert("INSID PROCEED");
+           
+           
+            console.log(SubQC,CompC,totalmarks)
+            $.ajax({
+
+               
+                type: 'POST',
+              
+                url: '/gen_templ_no_mcq',
+                data: {csrfmiddlewaretoken: window.CSRF_TOKEN,'SubQC[]':SubQC,'CompC[]':CompC,'totalm[]':totalmarks,},
+                success : function(response){
+                    window.location='template_details_noMCQ'
+                }
+            });
+
+
+
+        }
+
+</script>
+</body>
+</html>

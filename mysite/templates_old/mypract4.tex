@@ -1,0 +1,70 @@
+\documentclass[12pt]{article}
+\usepackage{graphicx}
+\begin{document}
+	
+\centering{KOLHAPUR INSTITUTE OF TECHNOLOGY'S}\par
+COLLEGE OF ENGINEERING (AUTONOMOUS),KOLHAPUR
+\par\noindent\rule{\textwidth}{0.4pt}
+
+\centering{\VAR{examt}}\par
+\centering{\VAR{subt}}\par
+\begin{flushleft}
+Day and Date :
+\end{flushleft}
+
+\begin{flushleft}
+Time :\hspace{3cm}Max Marks:{\VAR{maxm}}\\
+\end{flushleft}
+\noindent\rule{\textwidth}{0.1pt}
+\begin{flushleft}
+{\bf Instructions:}\\
+{\hspace{0.5cm} \bf IMP: Verify that you have received question paper with correct course, code, branch, etc}\\
+\hspace{1cm}i) All Questions are Compulsory\\
+\hspace{1cm}ii)Figure to right indicate full marks\\
+\hspace{1cm}iii)Assume suitable data wherever necessary\\
+\end{flushleft} 
+
+\begin{flushleft}
+{\bf Q.No: \hspace{2.5cm} \bf Questions \hspace{0.25cm} \bf Marks \hspace{0.25cm} \bf CO's\hspace{0.25cm} \bf Blooms Level}	
+\end{flushleft}
+
+\BLOCK{ for i in range(0,mcQuest)}
+\begin{flushleft}
+	\VAR{mcQuestArr[i]}\hspace{1cm}\VAR{questMCq[i]}\par
+	\begin{flushleft}
+		\hspace{1cm}A.\VAR{mcqList[i][0]}\par
+		\hspace{1cm}B.\VAR{mcqList[i][1]}\par
+		\hspace{1cm}C.\VAR{mcqList[i][2]}\par
+		\hspace{1cm}D.\VAR{mcqList[i][3]}\par
+		
+	\end{flushleft}
+\end{flushleft}
+
+\BLOCK{ endfor }
+
+\BLOCK{ for i in range(0,thrQuest)}
+\begin{flushleft}
+	\bf \VAR{i+2} \hspace{2cm} Attempt \VAR{compthr[i]} out of \VAR{subthr[i]}\\  
+\end{flushleft}
+\BLOCK{ for y in range(0,subthr[i])}
+\begin{flushleft}
+	{\VAR{thrQuestArr[i][y]}}\hspace{2cm}
+	\VAR{questTHr[i][y]} \hspace{1cm}  \VAR{selT[i][y]} \hspace{1cm} \VAR{coT[i][y]} \hspace{1cm} \VAR{bloomT[i][y]}\par
+	\BLOCK{ if BImageFieldT[i][y] }
+	\begin{figure}
+		\includegraphics[width=\linewidth]{\VAR{ImageFieldT[y][i]}}
+	\end{figure}	
+	
+	
+	\BLOCK{ endif }
+	
+	
+\end{flushleft}	
+\BLOCK{ endfor }		
+
+\BLOCK{ endfor }
+
+
+
+
+\end{document}

@@ -1,0 +1,217 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        .btn1 {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+          }
+          .btn4 {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+          }
+    
+          .btn2 {
+            background-color: rgb(253, 0, 0);
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+          }
+          .btn3 {
+            background-color: rgba(253, 17, 0, 0.87);
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+          }
+          canvas{
+
+            width:550px !important;
+            height:250px !important;
+          
+          }
+          #qpna
+	{
+	 font-size:30px;
+	
+  }
+
+
+    </style>
+  <title>Bootstrap Example</title>
+  
+
+  <meta charset="utf-8">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+  <script type="text/javascript"> window.CSRF_TOKEN = "{{ csrf_token }}"; </script> 
+</head>
+
+<body>
+      <nav class="navbar navbar-inverse bg-dark navbar-dark">
+        <div class="container-fluid">
+	 <a class="navbar-brand" href="#">
+          <img src="{% static 'kitimage.jpg'  %}" alt="" height="60" width="120">
+        </a>
+          <div class="navbar-header">
+            <a class="navbar-brand" href="#" id="qpna">QUESTION PAPER PREPARATION AND ANALYSIS</a>
+          </div>
+		 
+         
+    
+          <ul class="nav navbar-nav navbar-right">
+    
+            <li><a href="#">Logged in as :{{Eusername}}</a></li>
+            <li><a  href="#" data-toggle="modal" data-target="#logoutModal" ><span class="glyphicon glyphicon-log-in"></span> LOGOUT </a></li>
+          </ul>
+        </div>
+      </nav>
+	<div class="modal" id="logoutModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+	   <h4>Logout Confirmation<i class="fa fa-lock"></i></h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+       
+      </div>
+      <div class="modal-body">
+        <p><i class="fa fa-question-circle"></i> Are you sure you want to Logout? <br /></p>
+        <div class="actionsBtns">
+            <form action="/logout" method="post">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <input type="submit" class="btn btn-default btn-primary" data-dismiss="modal" value="Logout" onclick="execLogout()" />
+	                <button class="btn btn-default" data-dismiss="modal">Cancel</button>
+            </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 
+<div class="modal" id="DeleteModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header">
+         <h4>Delete Confirmation<i class="fa fa-lock"></i></h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+         
+        </div>
+        <div class="modal-body">
+          <p><i class="fa fa-question-circle"></i> Are you sure you want to Delete these file Records ?<br /></p>
+          <div class="actionsBtns">
+              <form action="/logout" method="post">
+                  <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                  <input type="submit" class="btn btn-default btn-danger" data-dismiss="modal" value="DELETE" onclick="GetTickedRows()" />
+                      <button class="btn btn-default" data-dismiss="modal">Cancel</button>
+              </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div> 
+      <div class="container">
+        <h1>CHOOSE THE QUESTION PAPER YOU TO DELETE</h1>
+        <table class="table table-hover" id="PDFtable">
+        <tr>
+         
+          <th>&nbsp;</th>
+           <th>ID</th>  <th>QuestionPaper Name</th><th>Question Paper Author  </th><th> Date and Time </th>
+                
+        </tr>
+        <tr>
+            {% for i in DeleteTable %}
+            <tr>
+            
+                <td>
+                    <input type="checkbox"/>
+                </td>
+                <td>{{i.id}}</td>
+                <td>
+                    {{i.File_name}}
+                </td>
+                
+           <td>
+               {{i.File_author}}
+           </td>
+           <td>
+             {{i.Creation_Date}}
+           </td>
+          
+
+           </tr>
+           {% endfor %}
+        </table>
+
+
+      </div>
+      <div class="container">
+        <button type="button" data-toggle="modal" class="btn btn-danger" data-target="#DeleteModal"  >DELETE THESE QUESTION PAPERS</button>
+
+    </div>
+
+    <script>
+        function GetTickedRows()
+        {
+            var index=0;
+            
+            $("#PDFtable input[type=checkbox]:checked").each(function () {
+        
+                var row=$(this).closest("tr")[0];  
+                idM[index]=(row.cells[1].innerHTML).trim();
+                index++;
+            });
+
+            $.ajax({
+                type: 'POST',
+              
+                url: '/Deletepdf2',
+                data: {csrfmiddlewaretoken: window.CSRF_TOKEN,'mcqid[]':idM},
+                success : function(response){
+                    window.location='Done_Deleting_pdf'
+                }
+                });
+        
+        } 
+
+        function execLogout()
+        {
+          window.location.href="Logout";
+        
+        }
+        
+
+
+    </script>
+
+
+    </body>

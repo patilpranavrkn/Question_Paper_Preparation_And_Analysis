@@ -1,0 +1,574 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th, td {
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even){background-color: #f2f2f2}
+
+th {
+  background-color: #4CAF50;
+  color: white;
+}
+</style>
+
+</head>
+<body>
+    <script 
+            src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript"></script>
+    <h2>Course Name {{course_name}}</h2>
+        <h2>Examination {{exam_name}}</h2>
+        <h2>Total Examination Marks {{Exam_marks}}</h2>
+        <h2>Total Questions :{{total_quest}}</h2>
+        <h2 id="cqn">Choose for : </h2>
+
+        <h2>Table of Theoretical Questions</h2>
+    <table id="THRQ">
+        <tr>
+          <th>&nbsp;</th>  <th>Question ID</th><th>Question Text  </th><th>CO</th><th>UNIT Num</th><th>
+                BLoom Level</th><th>Max Marks</th><th>Min Marks</th>
+           
+        </tr>
+        {% for item in thr_ques %}
+        <tr>
+            <td>
+                <input type="checkbox"/>
+            </td>
+            <td>
+                {{item.id}}
+            </td>
+            
+       <td>
+           {{item.Qtext}}
+       </td>
+       <td>
+           {{item.Co}}
+       </td>
+       <td>
+           {{item.unit_num}}
+       </td>
+       <td>
+           {{item.BloomL}}
+       </td>
+       
+        <td>
+        {{item.max_marks}}
+        </td>
+        <td>
+            {{item.min_marks}}
+            </td>
+
+       
+        </tr>
+        {% endfor %}
+
+
+        
+    </table>
+    <h2 align=centre>TABLE OF MCQ QuestionS</h2>
+    <table id="MCQT">
+        <tr>
+            
+                <th>&nbsp;</th>  <th>Question ID</th><th>Question Text  </th><th>CO</th><th>UNIT Num</th>
+                <th>BLoom Level</th> <th>Max Marks</th><th>Min Marks</th> <th>OPTION 1</th><th>OPTION 2</th><th>OPTION 3</th><th>OPTION 4</th>
+  
+        </tr>
+        {% for item in mcq_ques %}
+            <tr>
+                <td>
+                    <input type="checkbox"/>
+                </td>
+                <td>
+                    {{item.id}}
+                </td>
+                
+           <td>
+               {{item.Qtext}}
+           </td>
+           <td>
+               {{item.Co}}
+           </td>
+           <td>
+               {{item.unit_num}}
+           </td>
+           <td>
+               {{item.BloomL}}
+           </td>
+        
+           <td>
+            {{item.choice_1}}
+        </td>
+        <td>
+            {{item.choice_2}}
+        </td>
+        <td>
+            {{item.choice_3}}
+        </td>
+        <td>
+            {{item.choice_4}}
+        </td>
+        
+       <td>
+        {{item.max_marks}}
+       </td>
+       <td>
+        {{item.min_marks}}
+        </td>
+        </tr>
+        {% endfor %}
+
+    </table>
+
+  
+    <button onclick="GetTickedRows()"> PROCEED FURTHER</button>
+<h1>Set marks for the following Theory Questions:</h1>
+
+<table>
+    <tr><td id="qtext"></td></tr>
+    <tr><td>Max Marks:</td><td id="mxms"></td></tr>
+    <tr><td>Min Marks:</td><td id="minm"></td></tr>
+    <tr><td>BLOOML:</td><td id="blooml"></td></tr>
+    <tr><td>Select marks for the above Question</td><td ><input type=number id="smarks"></td></tr>
+    <tr><td><button onclick="AddElementMarks()">ADD MARKS</button></td></tr>
+</table>
+
+<table>
+    <tr><td id="qtext2"></td></tr>
+    <tr><td>Max Marks:</td><td id="mxms2"></td></tr>
+    <tr><td>Min Marks:</td><td id="minm2"></td></tr>
+    <tr><td>BLOOML:</td><td id="blooml2"></td></tr>
+    <tr><td>Select marks for the above Question</td><td ><input type=number id="smarks2"></td></tr>
+    <tr><td><button onclick="AddElementMarks2()">ADD MARKS</button></td></tr>
+</table>
+
+    <td><button  >ADDMARKS</button></td>
+
+    <button function="GenerateReport()">GENERATE REPORT</button>
+    <div>
+        <h3>  UNIT WISE QUESTION DISTRIBUTION</h3>
+    <canvas id="myChart" width="400" height="200" style="visibility: hidden"></canvas> 
+    </div>
+    
+    
+    <div>
+        <h3>  BLOOMS LEVEL WISE DISTRIBUTION</h3>
+    <canvas id="myChart2" width="400" height="200" style="visibility: hidden" ></canvas>
+    </div>
+    <div>
+        <h3>COURSE OUTCOME WISE DISTRIBUTION
+        </h3>
+        <canvas id="myChart3" width="400" height="200" style="visibility: hidden" ></canvas>
+
+    </div>
+<button onclick="GenLatex()">GENERATE LATEX</button>
+<script type="text/javascript"> window.CSRF_TOKEN = "{{ csrf_token }}"; </script> 
+<script>
+
+    var QtextM=[],QtextT=[],idM=[],idT=[],COT=[],COM=[],BLT=[],BLM=[],UnumT=[],UnumM=[],SelT=[],SelM=[],chch1=[],chch2=[],chch3=[],chch4=[]
+    var selectQ=[],IDT=[],IDM=[]
+    var mint=[],maxt=[]
+    var minm=[],maxm=[]
+    var SetThr=[],SetMcq=[]
+    var Qnu
+    var len1=0,len2=0
+    var totlen=0;
+    var addMleni=0;
+    var addTleni=0;
+
+    function GetTickedRows()
+    {   var index=0;
+        var jindex=0;
+        $("#MCQT input[type=checkbox]:checked").each(function () {
+
+         var row=$(this).closest("tr")[0];  
+         idM[index]=(row.cells[1].innerHTML).trim();
+         QtextM[index]=(row.cells[2].innerHTML).trim();
+         COM[index]=(row.cells[3].innerHTML).trim();
+         UnumM[index]=(row.cells[4].innerHTML).trim();
+         BLM[index]=(row.cells[5].innerHTML).trim();
+         chch1[index]=(row.cells[6].innerHTML).trim();
+         chch2[index]=(row.cells[7].innerHTML).trim();
+         chch3[index]=(row.cells[8].innerHTML).trim();
+         chch4[index]=(row.cells[9].innerHTML).trim();
+         maxm[index]=(row.cells[10].innerHTML).trim();
+         minm[index]=(row.cells[11].innerHTML).trim();
+         
+         index++;
+        
+
+        });
+
+        $("#THRQ input[type=checkbox]:checked").each(function () {
+
+         var row=$(this).closest("tr")[0];  
+         idT[jindex]=(row.cells[1].innerHTML).trim();
+         QtextT[jindex]=(row.cells[2].innerHTML).trim();
+         COT[jindex]=(row.cells[3].innerHTML).trim();
+         UnumT[jindex]=(row.cells[4].innerHTML).trim();
+         BLT[jindex]=(row.cells[5].innerHTML).trim();
+         maxt[jindex]=(row.cells[6].innerHTML).trim();
+         mint[jindex]=(row.cells[7].innerHTML).trim();
+
+         jindex++;
+         
+        
+        });
+
+        QUnum=UnumT.concat(UnumM)
+        BLooomL=BLT.concat(BLM)
+        Qco=COT.concat(COM)
+
+        console.log( QUnum)
+        console.log( BLooomL)
+        console.log(Qco)
+
+
+        document.getElementById("qtext").innerHTML=QtextT[addTleni];
+        document.getElementById("mxms").innerHTML=maxt[addTleni];
+        document.getElementById("minm").innerHTML=mint[addTleni];
+        document.getElementById("blooml").innerHTML=BLT[addTleni];
+
+        len1=QtextT.length
+        len2=QtextM.length
+        console.log("The length of the arrays are "+len1+" "+len2)
+      
+    }
+
+  function AddElementMarks()
+  {
+    
+    SetThr[addTleni]=document.getElementById("smarks").value
+    if(addTleni<len1)
+    {
+        addTleni++;
+
+        
+        document.getElementById("qtext").innerHTML=QtextT[addTleni];
+        document.getElementById("mxms").innerHTML=maxt[addTleni];
+        document.getElementById("minm").innerHTML=mint[addTleni];
+        document.getElementById("blooml").innerHTML=BLT[addTleni];
+
+        console.log("The length of index array is ",addTleni ," len of array is ",len1)
+      
+
+
+
+    }
+
+    if(addTleni==(len1))
+    {   console.log("Inside here ",addTleni)
+        document.getElementById("qtext2").innerHTML=QtextM[addMleni];
+        document.getElementById("mxms2").innerHTML=maxm[addMleni];
+        document.getElementById("minm2").innerHTML=minm[addMleni];
+        document.getElementById("blooml2").innerHTML=BLM[addMleni];
+
+    }
+
+
+  }
+  function AddElementMarks2()
+  {
+    SetMcq[addMleni]=document.getElementById("smarks").value
+    console.log("The value of Mcq index is ",addMleni,"and length of sec is ",len2)
+    if(addMleni<len2)
+    {   console.log("The value of Mcq index is ",addMleni,"and length of sec is ",len2)
+        addMleni++;
+
+        
+        document.getElementById("qtext").innerHTML=QtextM[addMleni];
+        document.getElementById("mxms").innerHTML=maxm[addMleni];
+        document.getElementById("minm").innerHTML=minm[addMleni];
+        document.getElementById("blooml").innerHTML=BLM[addMleni];
+
+       
+      
+
+
+
+    }
+    console.log("The value of Mcq index is ",addMleni,"and length of sec is ",len2)
+    if(addMleni==(len2))
+    {
+        
+        console.log("Inside here generate papers")
+        console.log(SetMcq,SetThr)
+
+
+    }
+  }
+
+  function GenLatex()
+  {
+ console.log("Inside gen Latex")
+console.log(QtextM,QtextT,idM,idT)
+    $.ajax({
+
+
+        type: 'POST',
+      
+        url: '/gen_latex',
+        data: {csrfmiddlewaretoken: window.CSRF_TOKEN,'QtextM[]':QtextM,'QtextT[]':QtextT,'idM[]':idM,'idT[]':idT,'COT[]':COT,'COM[]':COM,'BLT[]':BLT,'BLM[]':BLM,'UnumT[]':UnumT,'UnumM[]':UnumM,'SelT[]':SelT,'SelM[]':SelM,'chch1[]':chch1,'chch2[]':chch2,'chch3[]':chch3,'chch4[]':chch4,'SetThr[]':SetThr,'SetMcq[]':SetMcq,},
+        success : function(response){
+            window.location='template_details'
+        }
+    });
+  }
+    function Generatereport()
+    {
+        document.getElementById("myChart").style.visibility="visible";
+                 
+        // var dcm=document.getElementById("secondTable");
+         //console.log(dcm);
+         console.log("EWW DONE");
+         console.log(myChart.data.datasets[0].data)
+         myChart.data.datasets[0].data=[2,3,5,7,1,9];
+        myChart.update();
+       //console.log(myChart.data.datasets[0].data)
+
+       //UNit wise distribution LOgiC
+
+       UWDATA=[0,0,0,0,0,0];
+       for(var i=0;i<QUnum.length;i++)
+       {
+
+           if(Number(QUnum[i]==1))
+           {
+               UWDATA[0]++;
+
+           }
+           else if(Number(QUnum[i]==2))
+           {
+               UWDATA[1]++;
+               
+           }
+           else if(Number(QUnum[i]==3))
+           {
+               UWDATA[2]++;
+               
+           }
+           else if(Number(QUnum[i]==4))
+           {
+               UWDATA[3]++;
+               
+           }
+           else if(Number(QUnum[i]==5))
+           {
+               UWDATA[4]++;
+               
+           }
+           else if(Number(QUnum[i]==6))
+           {
+               UWDATA[5]++;
+               
+           }
+       }
+       myChart.data.datasets[0].data=UWDATA;
+       myChart.update();
+       document.getElementById("myChart2").style.visibility="visible";
+
+       BLOOML=[0,0,0,0,0,0]
+       for(var i=0;i<BLooomL.length;i++)
+       {
+
+           if(Number(BLooomL[i]==1))
+           {
+               BLOOML[0]++;
+
+           }
+           else if(Number(BLooomL[i]==2))
+           {
+               BLOOML[1]++;
+               
+           }
+           else if(Number(BLooomL[i]==3))
+           {
+               BLOOML[2]++;
+               
+           }
+           else if(Number(BLooomL[i]==4))
+           {
+               BLOOML[3]++;
+               
+           }
+           else if(Number(BLooomL[i]==5))
+           {
+                   BLOOML[4]++;
+               
+           }
+           else if(Number(BLooomL[i]==6))
+           {
+               BLOOML[5]++;
+               
+           }
+       }
+       myChart2.data.datasets[0].data=BLOOML;
+       myChart2.update();
+
+       document.getElementById("myChart3").style.visibility="visible";
+
+       COUTCOME=[0,0,0,0,0]
+       console.log(QCo);
+
+       for(var i=0;i<QCo.length;i++)
+       {
+           if(Number(QCo[i]==1))
+               COUTCOME[0]++;
+
+           else if(Number(QCo[i]==2))
+               COUTCOME[1]++;    
+           else if(Number(QCo[i]==3))
+               COUTCOME[2]++;
+           else if(Number(QCo[i]==4))
+               COUTCOME[3]++; 
+           else if(Number(QCo[i]==5))
+               COUTCOME[4]++;       
+       }
+
+       myChart3.data.datasets[0].data=COUTCOME;
+       myChart3.update();
+
+
+
+      
+    }
+
+
+    var ctx = document.getElementById("myChart"); 
+    var myChart = new Chart(ctx, { 
+      type: 'bar', 
+      data: { 
+        labels: ["UNIT 1", "UNIT 2" , "UNIT 3" , "UNIT 4", "UNIT 5", "UNIT 6"], 
+        datasets: [ 
+          { label: '# of students', 
+            data: [0,0,0,0,0,0], 
+            backgroundColor :['rgba(255, 99, 132, 0.2)', 
+                    'rgba(54, 162, 235, 0.2)', 
+                    'rgba(255, 206, 86, 0.2)', 
+                    'rgba(75, 192, 192, 0.2)', 
+                    'rgba(153, 102, 255, 0.2)', 
+                    'rgba(255, 159, 64, 0.2)' 
+    ], 
+      
+    borderColor: [ 
+                    'rgba(255,99,132,1)', 
+                    'rgba(54, 162, 235, 1)', 
+                    'rgba(255, 206, 86, 1)', 
+                    'rgba(75, 192, 192, 1)', 
+                    'rgba(153, 102, 255, 1)', 
+                    'rgba(255, 159, 64, 1)' 
+                ], 
+    borderWidth : 1 
+          } 
+        ] 
+      }, 
+      options: { 
+            scales: { 
+                yAxes: [{ 
+                    ticks: { 
+                        beginAtZero:true 
+                    } 
+                }] 
+            } 
+        } 
+    }); 
+    
+    
+    
+    
+    var ctx2 = document.getElementById("myChart2"); 
+    var myChart2 = new Chart(ctx2, { 
+      type: 'bar', 
+      data: { 
+        labels: ["LEVEL 1", "LEVEL 2" , "LEVEL 3" , "LEVEL 4", "LEVEL 5", "LEVEL 6"], 
+        datasets: [ 
+          { label: '# of students', 
+            data: [1,2,3,4,5,6], 
+            backgroundColor :['rgba(255, 99, 132, 0.2)', 
+                    'rgba(54, 162, 235, 0.2)', 
+                    'rgba(255, 206, 86, 0.2)', 
+                    'rgba(75, 192, 192, 0.2)', 
+                    'rgba(153, 102, 255, 0.2)', 
+                    'rgba(255, 159, 64, 0.2)' 
+    ], 
+      
+    borderColor: [ 
+                    'rgba(255,99,132,1)', 
+                    'rgba(54, 162, 235, 1)', 
+                    'rgba(255, 206, 86, 1)', 
+                    'rgba(75, 192, 192, 1)', 
+                    'rgba(153, 102, 255, 1)', 
+                    'rgba(255, 159, 64, 1)' 
+                ], 
+    borderWidth : 1 
+          } 
+        ] 
+      }, 
+      options: { 
+            scales: { 
+                yAxes: [{ 
+                    ticks: { 
+                        beginAtZero:true 
+                    } 
+                }] 
+            } 
+        } 
+    });  
+    
+    var ctx3 = document.getElementById("myChart3"); 
+    var myChart3 = new Chart(ctx3, { 
+      type: 'bar', 
+      data: { 
+        labels: ["CO 1", "CO 2" , "CO 3" , "CO 4", "CO 5"], 
+        datasets: [ 
+          { label: '# of students', 
+            data: [0,0,0,0,0], 
+            backgroundColor :['rgba(255, 99, 132, 0.2)', 
+                    'rgba(54, 162, 235, 0.2)', 
+                    'rgba(255, 206, 86, 0.2)', 
+                    'rgba(75, 192, 192, 0.2)', 
+                    'rgba(153, 102, 255, 0.2)' 
+                    
+    ], 
+      
+    borderColor: [ 
+                    'rgba(255,99,132,1)', 
+                    'rgba(54, 162, 235, 1)', 
+                    'rgba(255, 206, 86, 1)', 
+                    'rgba(75, 192, 192, 1)', 
+                    'rgba(153, 102, 255, 1)'
+                    
+                ], 
+    borderWidth : 1 
+          } 
+        ] 
+      }, 
+      options: { 
+            scales: { 
+                yAxes: [{ 
+                    ticks: { 
+                        beginAtZero:true 
+                    } 
+                }] 
+            } 
+        } 
+    });
+    
+
+     
+
+    
+
+
+</script>
+</body>

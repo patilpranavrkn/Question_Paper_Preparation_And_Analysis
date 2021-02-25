@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+
+<body>
+    
+        <table>
+            <tr>
+                <td>ENTER TOTAL NUMBER OF QUESTIONS:</td>
+            
+            <td>
+                <input type="number" id="num"> 
+            </td>
+            <tr>
+                <td>
+                   <button onclick="StartTakingSubQ()"> ENTER</button> 
+                </td>
+            </tr>
+        </table>
+
+    
+   
+        <table>
+            <tr>
+                <td id="subq"> </td><td><input type="number" id="subqn"></td>
+            </tr>
+            <tr>
+                <td id="totalcomp"></td><td><input type="number" id="tcn"></td>
+            </tr>
+            <tr>
+                <td id="totmarks"></td><td><input type="number" id="totm"></td>
+            </tr>
+
+            <tr><td><button onclick="RetrData()">Add</button></td></tr>
+            <tr><td><button onclick="startIter()">NEXT</button></td></tr>
+        </table>
+        <table>
+            <tr>
+                <td>Enter the Question number to which you want to assign the MCQ</td>
+                <td><input type="number" id="mcqQues"></td>
+            </tr>
+            <tr><td><button onclick="ProceedNP()">PROCEED FURTHER</button></td></tr>
+        </table>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+        <script type="text/javascript"> window.CSRF_TOKEN = "{{ csrf_token }}"; </script> 
+    
+    <script>
+
+        var SubQC=[],CompC=[],totalmarks=[]
+        var arrayi=0
+        Index_count=0;
+        var totq=0;
+        function StartTakingSubQ()
+        {
+            totq=Number(document.getElementById("num").value)
+           
+            startIter()
+        }
+
+        function startIter()
+        {  
+            console.log("inside start Iter")
+            console.log(Index_count)
+            console.log("The value of ",totq)
+           if(Index_count<totq)
+            {
+                console.log("Index count is ",Index_count)
+                Index_count++;
+                var tdsubq=document.getElementById("subq")
+                var totalcomp=document.getElementById("totalcomp")
+                var totalmarks=document.getElementById("totmarks")
+                tdsubq.innerHTML="Enter total subquestions for Question No. "+Index_count;
+                totalcomp.innerHTML="Enter total compulsory Questions for Question No."+Index_count;
+                totalmarks.innerHTML="Enter total marks for the subject "+Index_count;
+
+                return;
+            }
+            
+        }
+
+        function RetrData()
+        {
+            subqs=document.getElementById("subqn")
+            tcomp=document.getElementById("tcn")
+            totm=document.getElementById("totm")
+
+            if(Index_count<totq)
+            {
+            SubQC[arrayi]=subqs.value
+            CompC[arrayi]=tcomp.value
+            totalmarks[arrayi]=totm.value
+            console.log(totm.value)
+            console.log("The values of the array are ",SubQC,CompC,totalmarks)
+            arrayi++
+            console.log(subqs.value);
+            console.log(tcomp.value);
+
+            startIter()
+
+            return;
+            }
+            
+
+        }
+
+        function ProceedNP()
+        {
+            
+            var mcQN=document.getElementById("mcqQues").value
+            console.log(SubQC,CompC,totalmarks)
+            $.ajax({
+
+               
+                type: 'POST',
+              
+                url: '/gen_templ',
+                data: {csrfmiddlewaretoken: window.CSRF_TOKEN,'SubQC[]':SubQC,'CompC[]':CompC,'totalm[]':totalmarks,'mcqQn':mcQN,},
+                success : function(response){
+                    window.location='template_details'
+                }
+            });
+
+
+
+        }
+    </script>
+</body>
+<html>

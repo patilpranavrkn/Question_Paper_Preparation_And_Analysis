@@ -1,0 +1,112 @@
+<html>
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script type="text/javascript"> window.CSRF_TOKEN = "{{ csrf_token }}"; </script> 
+        <style>
+        </style>
+    </head>
+    <body>
+        
+            {% csrf_token %}
+            <table>
+                <tr>
+                    <td>
+                    <select name="etype" id="etype" onchange="changeval()">
+                        <option value="midsem">MIDSEM</option>
+                        <option value="endsem">ENDSEM</option>
+                        <option value="unit">UNIT TEST</option>
+        
+        
+                    </select>
+                    <td>
+                       <h3>Total Marks : </h3> <h2 id="marks">50</h2>
+                    </td>
+                </td>
+        
+                </tr>
+            </table>
+            <table>
+                <tr>
+                    <td>Enter TOTAL NUMBER OF Questions :</td><td ><input type="number" id="tq"></td>
+                </tr>
+                <tr><td><button onclick="TakeSubQ()">ENTER:</button></td></tr>
+            </table>
+
+            
+            
+
+        
+        <script>
+           
+            var TotalSubQ=[],SubQSr=[],CompArr=[]
+            function changeval()
+            {
+                var x=document.getElementById("etype")
+        var text = x.options[x.selectedIndex].text;
+        var y=document.getElementById("marks")
+        if(text=='MIDSEM'){y.innerText='50'}
+        
+            
+            else if(text=='ENDSEM')
+            {
+                y.innerText='70'
+            }
+            else if(text=='UNIT TEST')
+            {
+                y.innerText='30'
+            }
+        }
+
+        function TakeSubQ()
+        {
+            //var totq=document.getElementById("Qc").innerText;
+            //alert(document.getElementById("Qc").innerText);
+            //console.log(document.getElementById("Qc").innerText)
+            var num=Number(document.getElementById("tq").value)
+            console.log("The values is ",num)
+            var text1=document.getElementById("ctext")
+            var num1=document.getElementById("subq")
+           // var tbl=document.getElementById("dynamicTab")
+
+           for( var i=0;i<num;i++)
+           {
+
+                var iv=prompt("Please Enter the total subquestions for Question No. "+(i+1))
+                TotalSubQ[i]=parseInt(iv)
+                SubQSr[i]=i+1
+           }
+           for(var i=0;i<num;i++)
+           {
+               var compulosry=prompt("Please Enter total Compulsory questions for Question No. "+(i+1)+" Which has total Questions "+(TotalSubQ[i]))
+                CompArr[i]=parseInt(compulosry)
+
+           }
+
+          // alert(TotalSubQ,SubQSr)
+          var x=document.getElementById("etype")
+          var text = x.options[x.selectedIndex].text;
+          var marks=document.getElementById("marks").innerText
+          
+          console.log("Show the text")
+          alert(text)
+          console.log(text)
+                $.ajax({
+
+
+                    type: 'POST',
+                  
+                    url: '/gen_templ',
+                    data: {csrfmiddlewaretoken: window.CSRF_TOKEN,'TotalSubQ[]':TotalSubQ,'SubQSr[]':SubQSr,'Exam':text,'Marks':marks,'CompArr[]':CompArr,},
+                    success : function(response){
+                        window.location='template_details'
+                    }
+                });
+
+
+           }
+
+        
+      
+        </script>
+    </body>
+</html>    

@@ -1,0 +1,75 @@
+\documentclass[12pt]{article}
+\usepackage{graphicx}
+\usepackage{ragged2e}
+\usepackage{array}
+\newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+
+\begin{document}
+		\centering{KOLHAPUR INSTITUTE OF TECHNOLOGY'S}\par
+	COLLEGE OF ENGINEERING (AUTONOMOUS),KOLHAPUR
+	\par\noindent\rule{\textwidth}{0.4pt}
+	\centering{\VAR{exam}}\par
+\centering{\VAR{examt}}\par
+\centering{\VAR{subt}}\par
+\begin{flushleft}
+	Day and Date :{\VAR{date}}\hspace{5.5cm}PRN:
+\end{flushleft}
+
+\begin{flushleft}
+	Time :{\VAR{etime}}\hspace{7cm}Max Marks:{\VAR{maxm}}\\
+\end{flushleft}
+\noindent\rule{\textwidth}{0.1pt}
+\begin{flushleft}
+	{\bf Instructions:}\\
+	{\hspace{0.5cm} \bf IMP: Verify that you have received question paper with correct course, code, branch, etc}\\
+	\hspace{1cm}i) All Questions are Compulsory\\
+	\hspace{1cm}ii)Figure to right indicate full marks\\
+	\hspace{1cm}iii)Assume suitable data wherever necessary\\
+\end{flushleft} 
+
+\begin{tabular}{L{1cm}C{8cm}C{2cm}C{2cm}C{1cm}}
+	\bf{QNo} & 
+	\bf{Question}
+	
+	&
+	\bf{Marks}&
+	\bf{CO}&
+	\bf{BL}
+	\hline
+	
+	
+\end{tabular}
+
+	\BLOCK{ for i in range(0,mainQuest)}
+	
+
+	
+	
+	\begin{tabular}{|L{1cm}|L{8cm}|C{2cm}|C{2cm}|C{1cm}|}
+			\bf\VAR{i+1} & Attempt \VAR{Comp[i]} out of \VAR{subq[i]} & \VAR{mxm[i]} & & \\ \hline
+			\BLOCK{ for y in range(0,subq[i])}
+	\VAR{Qnos[i][y]} &
+	\VAR{QT[i][y]} \newline
+	\BLOCK{ if BImageFieldT[i][y] }
+	\begin{center}
+		\includegraphics[width=4cm,height=3cm]{media/\VAR{ImageFieldT[i][y]}}	
+	\end{center}
+
+	
+	\BLOCK{ endif }
+	 &  \VAR{SelT[i][y]} & CO\VAR{CoT[i][y]} & \VAR{Blt[i][y]}\\ \hline
+	\BLOCK{ endfor }
+	\end{tabular}
+
+	
+	
+
+
+	
+	
+	\BLOCK{ endfor }
+	
+	
+\end{document}

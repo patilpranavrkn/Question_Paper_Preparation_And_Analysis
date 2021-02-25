@@ -1,0 +1,113 @@
+<html>
+    <head>
+        <style>
+		#qpna
+	{
+	 font-size:30px;
+	
+	}
+        </style>
+    </head>
+    <body>
+
+        <h2>Enter The details of Question paper you want to set</h2>
+        <form onsubmit="return validateForm()" name="myform" action='template_details' method="POST">
+            {% csrf_token %}
+            <table>
+            <tr>
+                <td>
+                <select name="etype" id="etype" onchange="changeval()">
+                    <option value="midsem">MIDSEM</option>
+                    <option value="endsem">ENDSEM</option>
+                    <option value="unit">UNIT TEST</option>
+    
+    
+                </select>
+                <td>
+                   <h3>Total Marks : </h3> <h2 id="marks">50</h2>
+                </td>
+            </td>
+    
+            </tr>
+            <h3>Enter The marking scheme.Mark no of question to the marks</h3>
+            <tr>
+                <td>1 mark Questions :</td><td><input type="number" name="1mark" id="1mark" >
+
+              </td>
+            </tr>
+           
+            <tr>
+                <td>4 mark Questions :</td><td><input type="number" name="4mark" id="4mark">
+
+              </td>
+            </tr>
+          
+            <tr>
+                <td>6 mark Questions :</td><td><input type="number" name="6mark" id="6mark">
+
+              </td>
+            </tr>
+          
+            <tr>
+                <td>8 mark Questions :</td><td><input type="number" name="8mark" id="8mark">
+
+              </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="submit" value="nextpage">
+                </td>
+            </tr>
+        </table>
+        
+        </form>
+<script>
+    document.getElementById("1mark").value='0'
+    document.getElementById("4mark").value='0'
+    document.getElementById("6mark").value='0'
+    document.getElementById("8mark").value='0'
+    function changeval()
+    {
+        var x=document.getElementById("etype")
+var text = x.options[x.selectedIndex].text;
+var y=document.getElementById("marks")
+if(text=='MIDSEM'){y.innerText='50'}
+
+    
+    else if(text=='ENDSEM')
+    {
+        y.innerText='70'
+    }
+    else if(text=='UNIT TEST')
+    {
+        y.innerText='30'
+    }
+    function changeval(){
+
+
+
+
+    }
+}
+function validateForm()
+{
+    var tot=parseInt(document.getElementById("1mark").value)*1+parseInt(document.getElementById("4mark").value)*4+parseInt(document.getElementById("6mark").value)*6+parseInt(document.getElementById("8mark").value)*8;
+    console.log(tot)
+  
+    var y=parseInt(document.getElementById("marks"))
+
+    if((tot+10)>=y)
+        return true;
+
+    return true;    
+    
+
+}
+
+
+</script>
+
+    </body>
+
+</html>    
+

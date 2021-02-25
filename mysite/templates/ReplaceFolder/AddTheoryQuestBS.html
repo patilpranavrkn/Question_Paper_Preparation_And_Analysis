@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+		<script type="text/javascript" src="http://latex.codecogs.com/editor3.js"></script>
+<title>Page Title</title>
+<meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+<style type="text/css">
+form {
+    width: 650px;
+    margin: 0 auto;
+}
+
+
+
+</style>
+</head>
+<body>
+
+    <div class="container">
+        <h1 align="center" style="color:red"> Add Details of the Questions</h2>
+            <form action="AddTheoryQues" method="POST"  enctype="multipart/form-data"></form>
+            {% csrf_token %}
+            <div class="form-group">
+
+                <label for="qt">INSERT QUESTION TEXT:</label>
+                <input type=text class="form-control" id="qt" required size="100">
+            </div>
+
+            <div class="form-group">
+                <a href="javascript:OpenLatexEditor('testbox','latex','')" class="btn btn-info" role="button">LAUNCH EQUATIONS EDITOR</a>
+
+            </div>
+            <div class="form-group">
+                <label for="comment">PICK YOUR EQUATION AND ADD IT TO THE QUESTION TEXT:</label>
+                <textarea class="form-control" rows="5" id="testbox"></textarea>
+              </div>
+              <div class="form-group">
+                <label for="sel1">Select UNIT NO:</label>
+                <select class="form-control" id="sel1"  name="un"> 
+                    {% for i in Unitd %}
+                  <option value="{{i.Unit_num}}">{{i.Unit_num}} - {{i.Unit_name}}</option>
+                  {% endfor %}
+                 
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="sel1">CO :</label>
+                <select class="form-control" id="sel1"  name="CO"> 
+                    {% for i in Co %}
+                    <option value="{{i.Outcome_no}}">{{i.Outcome_no}} - {{i.Outcome_Text}}</option>
+                    {% endfor %}
+                 
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="sel2">BLOOMS LEVEL :</label>
+                <select class="form-control" id="sel2"  name="BL"> 
+                    
+                    <option>1</option> 
+                    <option>2</option> 
+                    <option>3</option> 
+                    <option>4</option> 
+                    <option>5</option> 
+                    <option>6</option> 
+                    
+                 
+                </select>
+              </div>
+              <div class="form-group">
+
+                <label for="MIM">MINIMUM MARKS:</label>
+                <select class="form-control" id="MIM"  name="MIM"> 
+                    
+                    <option>1</option> 
+                    <option>2</option> 
+                    <option>3</option> 
+                    <option>4</option> 
+                    <option>5</option> 
+                    <option>6</option> 
+                    
+                 
+                </select>
+            
+            </div> 
+            <div class="form-group">
+
+                <label for="MXM">MAXIMUM MARKS:</label>
+                <select class="form-control" id="MXM"  name="MXM"> 
+                    
+                    <option>1</option> 
+                    <option>2</option> 
+                    <option>3</option> 
+                    <option>4</option> 
+                    <option>5</option> 
+                    <option>6</option> 
+                    
+                 
+                </select>
+            
+            </div> 
+
+            <div class="form-group">
+
+                <label for="image">Remarks (optional)</label>
+                <input type="file"  id="image" name="image">
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="ADD QUESTION" id="submit" name="submit">
+
+
+            </div>
+
+
+         
+            
+        
+    </div>
+
+
+</form>
+</body> 

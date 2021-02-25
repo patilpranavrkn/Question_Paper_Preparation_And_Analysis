@@ -1,0 +1,40 @@
+<html>
+    <head>
+        <style>
+        </style>
+        </head>
+        <body>
+            <h2 align=center>COURSE NAME {{Course_name}}</h2>
+            <h2 align=center>CURRENT COURSE OUTCOMES</h2>
+            <table border='1' align=center style="margin: 0px auto;">
+                <thead>
+                    <tr><td>CO Num</td>
+                    <td>Course Outcome</td>
+                    </tr>
+                    
+                </thead>
+                    <tbody>
+                        {% for i in CO_DET  %}
+                    <tr>
+                        <td>{{i.Outcome_no}}</td>
+                        <td>{{i.Outcome_Text}}</td>
+                    </tr>
+                    {% endfor %}
+
+                    </tbody>
+
+
+
+            </table>
+            <h2 align=center>ADD CO DETAILS</h2>
+            <form action='InsertCo'>
+                <table  align=center style="margin: 0px auto;">
+                    <tr><td>Enter Outcome No:</td> <td><input type="number" name="NO"></td></tr>
+                    <tr><td>Outcome Details:</td>
+                    <td><input type=tex name="OD"></td>
+                    <tr><td><input type="submit" value="ADD CO"></td></tr>
+                </table>
+            </form>
+
+        </body>
+</html>        

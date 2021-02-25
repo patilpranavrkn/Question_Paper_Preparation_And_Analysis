@@ -1,0 +1,168 @@
+<html>
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <style>
+        </style>
+    </head>
+    <body>
+        
+            {% csrf_token %}
+            <table>
+                <tr>
+                    <td>
+                    <select name="etype" id="etype" onchange="changeval()">
+                        <option value="midsem">MIDSEM</option>
+                        <option value="endsem">ENDSEM</option>
+                        <option value="unit">UNIT TEST</option>
+        
+        
+                    </select>
+                    <td>
+                       <h3>Total Marks : </h3> <h2 id="marks">50</h2>
+                    </td>
+                </td>
+        
+                </tr>
+            </table>
+            <table>
+                <tr>
+                    <td>Enter TOTAL NUMBER OF Questions :</td><td ><input type="number" id="tdr"></td>
+                </tr>
+                <tr><td><button onclick="TakeSubQ()">ENTER:</button></td></tr>
+            </table>
+
+              <table id="dynamicTab" border=1>
+
+              </table>
+
+              <button onclick="getOnNextpage()">NEXT PAGE</button>
+            
+            
+
+        
+        <script>
+           
+            function changeval()
+            {
+                var x=document.getElementById("etype")
+        var text = x.options[x.selectedIndex].text;
+        var y=document.getElementById("marks")
+        if(text=='MIDSEM'){y.innerText='50'}
+        
+            
+            else if(text=='ENDSEM')
+            {
+                y.innerText='70'
+            }
+            else if(text=='UNIT TEST')
+            {
+                y.innerText='30'
+            }
+        }
+
+        function TakeSubQ()
+        {
+            //var totq=document.getElementById("Qc").innerText;
+            //alert(document.getElementById("Qc").innerText);
+            //console.log(document.getElementById("Qc").innerText)
+            var num=Number(document.getElementById("tdr").value)
+            console.log("The values is ",num)
+            var text1=document.getElementById("ctext")
+            var num1=document.getElementById("subq")
+            var tbl=document.getElementById("dynamicTab")
+            tbl.innerHTML = "";
+            for(var i=1;i<=num;i++)
+            {
+                addRow(tbl, i)
+                
+
+
+            }
+
+
+        }
+            function addRow(tbl,i) {
+                var tr = document.createElement('tr');
+            
+                addSr(tr,i);
+                addQt(tr,i);
+                addinp(tr);
+               
+            
+                tbl.appendChild(tr)
+
+
+        }
+
+        function addSr(tr,i)
+        {
+            var td1 = document.createElement('td');
+            td1.innerHTML=i;
+            td1.name="inp1"
+            tr.appendChild(td1);
+        }
+        
+  function addinp(tr) {
+
+    var td2 = document.createElement('input');
+
+
+    td2.type='number'
+    
+
+    tr.appendChild(td2)
+  }
+
+  function addQt(tr,i)
+  {
+      var td3 =document.createElement("td")
+      td3.innerHTML="Add total number of sub questions for question no. "+i;
+      tr.appendChild(td3)
+
+  }
+
+  function getOnNextpage()
+  {
+    var tbl=document.getElementById("dynamicTab");
+    SrN=[],SubQ=[]
+    console.log(tbl.rows.length+" are the total rows")
+    tbl.find('tr').each(function (i, el) {
+        var $tds = $(this).find('td'),
+        
+
+            productId = $tds.eq(0).text(),
+            product =  $tds.eq(1).text(),
+            Quantity = $tds.eq(2).text();
+        // do something with productId, product, Quantity
+        console.log(productID,product,Quantity)
+    });
+
+    for(var i=0;i<tbl.rows.length;i++)
+    {      
+       // SrN[i-1]=(tbl.rows[i].cells[0].innerHTML).trim();
+        
+         console.log(tbl.rows[i])
+        //SubQ[i-1]=(tbl.rows[i].cells[2].innerHTML).trim();
+       // console.log((tbl.rows[i].cells[2].innerHTML).trim())
+        
+    }    
+    console.log(SrN)
+    console.log(SubQ)
+
+        /*
+        $.ajax({
+            type: 'POST',
+          
+            url: '/gen_templ',
+            data: {csrfmiddlewaretoken: window.CSRF_TOKEN,'QtextM[]':QtextM,'QtextT[]':QtextT,'idM[]':idM,'idT[]':idT,'COT[]':COT,'COM[]':COM,'BLT[]':BLT,'BLM[]':BLM,'UnumT[]':UnumT,'UnumM[]':UnumM,'SelT[]':SelT,'SelM[]':SelM,'chch1[]':chch1,'chch2[]':chch2,'chch3[]':chch3,'chch4[]':chch4,},
+        });
+        */
+    }
+    
+
+
+  
+      
+        </script>
+    </body>
+</html>    
